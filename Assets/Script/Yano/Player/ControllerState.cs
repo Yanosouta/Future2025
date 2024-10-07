@@ -42,7 +42,7 @@ public class ControllerState : MonoBehaviour
     void Update()
     {
         m_button = m_controller.GetButton();
-
+        Debug.Log(m_button);
         switch (m_button)
         {
             case ControllerBase.ControllerButton.Button_A:
