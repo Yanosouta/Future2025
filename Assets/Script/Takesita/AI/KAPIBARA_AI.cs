@@ -67,92 +67,69 @@ public class KAPIBARA_AI : MonoBehaviour
         // 次の行動まで待機
         if (actionTimer > 0)
         {
-            actionTimer -= Time.deltaTime;
+            actionTimer -= Time.deltaTime; // actionTimerを減少させる
         }
         else
         {
-            switchAction = true;
+            switchAction = true; // タイマーが0以下になったらswitchActionをtrueにする
         }
 
-        if (currentState == AIState.Idle)
+        if (switchAction)
         {
-            if (switchAction)
+            switch (currentState)
             {
-                // ランダムに「食べる」か「歩く」行動を選択
-                if (Random.value > walkingProbability)
-                {
-                    // 食べる
-                    actionTimer = Random.Range(minEatingTime, maxIdleTime);
-                    currentState = AIState.Eating;
-                }
-                else
-                {
-                    // 歩く //agent.destination = RandomNavSphere(transform.position, Random.Range(3, 7));
+                case AIState.Idle:
+                    // ランダムに「食べる」か「歩く」行動を選択
+                    if (Random.value > walkingProbability)
+                    {
+                        // 食べる
+                        currentState = AIState.Eating;
+                        actionTimer = Random.Range(minEatingTime, maxEatingTime);
+                    }
+                    else
+                    {
+                        // 歩く
+                        SetNewDestination();
+                        currentState = AIState.Walking;
+                        actionTimer = actionInterval; // 次の行動までのタイマーをリセット
+                    }
+                    break;
 
-                    SetNewDestination();            // 新しい目的地を設定
-                    // 目的地にオブジェクトを生成
-                    SpawnObjectAtDestination(currentDestination);
-                    currentState = AIState.Walking; // ステートを歩き状態に変更                   
-                }
+                case AIState.Walking:
+                    // 目的地に到達したかどうか確認
+                    if (DoneReachingDestination())
+                    {
+                        currentState = AIState.Idle;
+                        actionTimer = Random.Range(minIdleTime, maxIdleTime); // 次の行動までのタイマーをリセット
+                    }
+                    break;
 
-                SwitchAnimationState(currentState);
-                // 過去のアイドル位置を記録（必要に応じて保持する）
-                previousIdlePoints.Add(transform.position);
-                if (previousIdlePoints.Count > 5)
-                {
-                    previousIdlePoints.RemoveAt(0);
-                }
-
-                switchAction = false; // 行動が完了したのでリセット
-            }
-        }
-        else if (currentState == AIState.Walking)
-        {
-            agent.speed = walkingSpeed;
-            // 速度に基づいてアニメーションを制御
-            if (agent.velocity.sqrMagnitude > 0.1f) // 小さい値を選んで、移動中かどうか確認
-            {
-                animator.SetBool("isWalking", true);
-            }
-            else
-            {
-                animator.SetBool("isWalking", false);
-            }
-            // 目的地に到達したかどうかを確認
-            if (DoneReachingDestination())
-            {
-                currentState = AIState.Idle;
-                actionTimer = Random.Range(minIdleTime, maxIdleTime); // 次の行動までのタイマーをリセット
-                SwitchAnimationState(currentState);
-            }
-            else
-            {
-                // 移動中の回転をスムーズにする
-                Vector3 direction = (agent.steeringTarget - transform.position).normalized;
-                if (direction != Vector3.zero)
-                {
-                    Quaternion lookRotation = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-                }
-            }
-        }
-        else if (currentState == AIState.Eating)
-        {
-            if (switchAction)
-            {
-                // 食べるアニメーションが終了したらIdleに戻る
-                if (!animator || animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                {
-                    //agent.destination = RandomNavSphere(transform.position, Random.Range(3, 7));
+                case AIState.Eating:
+                    // Eating状態が終わったらIdleに戻る
                     currentState = AIState.Idle;
-                    actionTimer = Random.Range(minIdleTime, maxIdleTime);
-                    SwitchAnimationState(currentState);
-                    //switchAction = false;
-                }
+                    actionTimer = Random.Range(minIdleTime, maxIdleTime); // 次の行動までのタイマーをリセット
+                    break;
             }
+
+            switchAction = false; // 行動が完了したのでリセット
+            SwitchAnimationState(currentState); // アニメーションの切り替え
         }
 
-        //Debug.Log(currentState);
+        // アニメーションの制御（エージェントの速度に基づく）
+        if (agent.velocity.sqrMagnitude > 0.1f) // 移動中かどうか確認
+        {
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
+
+        // 回転の処理（歩行中の場合）
+        if (currentState == AIState.Walking)
+        {
+            RotateTowardsDestination();
+        }
     }
 
     void SetNewDestination()
@@ -246,5 +223,21 @@ public class KAPIBARA_AI : MonoBehaviour
         // AIと目的地をつなぐラインを描画
         Gizmos.color = Color.blue; // 青色で描画
         Gizmos.DrawLine(transform.position, currentDestination); // AIから目的地までのラインを描画
+    }
+
+    void RotateTowardsDestination()
+    {
+        // エージェントの目的地までの方向を計算
+        Vector3 direction = (agent.steeringTarget - transform.position).normalized;
+
+        // 方向がゼロでないことを確認（エージェントが目的地に近づきすぎているとゼロになる可能性がある）
+        if (direction != Vector3.zero)
+        {
+            // LookRotationを使って目的地の方向に回転させる
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+            // 現在の回転を新しい回転に補間（スムーズな回転を実現）
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        }
     }
 }
