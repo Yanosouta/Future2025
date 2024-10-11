@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: KAPIBARA
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f444c3fd96f76a14aad5dfffdaf8f5dc, type: 3}
+      propertyPath: m_TagString
+      value: KAPIBARA
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -85,15 +89,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   walkingSpeed: 1
-  walkingProbability: 0.8
+  walkingProbability: 0.3
   minRange: 10
   maxRange: 15
   minIdleTime: 0.1
   maxIdleTime: 1
-  minEatingTime: 3
-  maxEatingTime: 5
+  minEatingTime: 5
+  maxEatingTime: 10
   rotationSpeed: 0.5
-  actionInterval: 60
+  actionInterval: 20
   animator: {fileID: 1720025790449316735}
   objectToSpawn: {fileID: 8243447687768067945, guid: 1e5163c4b5eb05e41aba49a56f69ca72, type: 3}
 --- !u!95 &1720025790449316735
@@ -126,7 +130,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3882779386812163997}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.1
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
