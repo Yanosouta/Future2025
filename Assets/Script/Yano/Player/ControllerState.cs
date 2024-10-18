@@ -21,7 +21,7 @@ public class ControllerState : MonoBehaviour
         public bool ButtonDown;
         public bool ButtonStick;
         public bool ButtonDoNot;
-    
+        public bool ButtonMenu;
     }
     KeyButton m_Key;
 
@@ -42,7 +42,7 @@ public class ControllerState : MonoBehaviour
     void Update()
     {
         m_button = m_controller.GetButton();
-        Debug.Log(m_button);
+        //Debug.Log(m_button);
         switch (m_button)
         {
             case ControllerBase.ControllerButton.Button_A:
@@ -80,6 +80,9 @@ public class ControllerState : MonoBehaviour
                 break;
             case ControllerBase.ControllerButton.DoNot:
                 TrueDoNot();
+                break;
+            case ControllerBase.ControllerButton.Button_Menu:
+                TrueMenu();
                 break;
         }
         
@@ -131,6 +134,10 @@ public class ControllerState : MonoBehaviour
     public bool GetButtonDoNot()
     {
         return m_Key.ButtonDoNot;
+    }
+    public bool GetButtonMenu()
+    {
+        return m_Key.ButtonMenu;
     }
     private void InitKeyButton()
     {
@@ -191,6 +198,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueY()
     {
@@ -206,6 +214,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueL()
     {
@@ -221,6 +230,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueR()
     {
@@ -236,6 +246,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueLeft()
     {
@@ -251,6 +262,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueRight()
     {
@@ -266,6 +278,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueUp()
     {
@@ -281,6 +294,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueDown()
     {
@@ -296,6 +310,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = true;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueStick()
     {
@@ -311,6 +326,7 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = true;
         m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = false;
     }
     private void TrueDoNot()
     {
@@ -326,5 +342,22 @@ public class ControllerState : MonoBehaviour
         m_Key.ButtonDown = false;
         m_Key.ButtonStick = false;
         m_Key.ButtonDoNot = true;
+        m_Key.ButtonMenu = false;
+    }
+    private void TrueMenu()
+    {
+        m_Key.ButtonA = false;
+        m_Key.ButtonB = false;
+        m_Key.ButtonX = false;
+        m_Key.ButtonY = false;
+        m_Key.ButtonL = false;
+        m_Key.ButtonR = false;
+        m_Key.ButtonLeft = false;
+        m_Key.ButtonRight = false;
+        m_Key.ButtonUp = false;
+        m_Key.ButtonDown = false;
+        m_Key.ButtonStick = false;
+        m_Key.ButtonDoNot = false;
+        m_Key.ButtonMenu = true;
     }
 }
