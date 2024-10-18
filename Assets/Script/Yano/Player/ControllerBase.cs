@@ -53,7 +53,7 @@ public class ControllerBase : MonoBehaviour
                 break;
         }
         
-        Debug.Log("Zキー、Enterキー,Aボタン");
+        //Debug.Log("Zキー、Enterキー,Aボタン");
     }
     //=======================================
     //Xキー、BackSpaceキーを押した時に呼び出す
@@ -61,9 +61,19 @@ public class ControllerBase : MonoBehaviour
     //=======================================
     public void Button_B(InputAction.CallbackContext context)
     {
-        
-       
-        Debug.Log("Xキー、BackSpaceキー,Bボタン");
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                //ボタンが押された
+                ButtonChange(ControllerButton.Button_B);
+                break;
+            case InputActionPhase.Canceled:
+                //ボタンが離された
+                ButtonChange(ControllerButton.DoNot);
+                break;
+        }
+
+        //Debug.Log("Xキー、BackSpaceキー,Bボタン");
     }
     //=======================================
     //Cキーを押した時に呼び出す
@@ -83,7 +93,7 @@ public class ControllerBase : MonoBehaviour
                 break;
         }
         
-        Debug.Log("Cキー,Xボタン");
+        //Debug.Log("Cキー,Xボタン");
     }
     //=======================================
     //Vキーを押した時に呼び出す
@@ -103,7 +113,7 @@ public class ControllerBase : MonoBehaviour
                 break;
         }
         
-        Debug.Log("Vキー、Yボタン");
+       // Debug.Log("Vキー、Yボタン");
     }
     //=======================================
     //Escキーを押した時に呼び出す
@@ -123,7 +133,7 @@ public class ControllerBase : MonoBehaviour
                 break;
         }
         
-        Debug.Log("Escキー、,メニューボタン");
+        //Debug.Log("Escキー、,Selectボタン");
     }
     //=======================================
     //Qキーを押した時に呼び出す
@@ -143,7 +153,7 @@ public class ControllerBase : MonoBehaviour
                 break;
         }
         
-        Debug.Log("Qキー、,Lボタン");
+        //Debug.Log("Qキー、,Lボタン");
     }
     //=======================================
     //Eキーを押した時に呼び出す
@@ -163,7 +173,7 @@ public class ControllerBase : MonoBehaviour
                 break;
         }
         
-        Debug.Log("Eキー、Rボタン");
+        //Debug.Log("Eキー、Rボタン");
     }
     //=======================================
     //矢印キーを押した時に呼び出す
@@ -206,7 +216,7 @@ public class ControllerBase : MonoBehaviour
                 ButtonChange(ControllerButton.DoNot);
                 break;
         }
-        Debug.Log("Wキー、上ボタン");
+        //Debug.Log("Wキー、上ボタン");
     }
     //=======================================
     //Sキーを押した時に呼び出す
@@ -227,7 +237,7 @@ public class ControllerBase : MonoBehaviour
         }
        
 
-        Debug.Log("Sキー、下ボタン");
+        //Debug.Log("Sキー、下ボタン");
     }
     //=======================================
     //Aキーを押した時に呼び出す
@@ -246,7 +256,7 @@ public class ControllerBase : MonoBehaviour
                 ButtonChange(ControllerButton.DoNot);
                 break;
         }
-        Debug.Log("Aキー、左ボタン");
+        //Debug.Log("Aキー、左ボタン");
     }
     //=======================================
     //Dキーを押した時に呼び出す
@@ -266,9 +276,8 @@ public class ControllerBase : MonoBehaviour
                 break;
         }
        
-        Debug.Log("Dキー、右ボタン");
+        //Debug.Log("Dキー、右ボタン");
     }
-
     public void ButtonChange(ControllerButton newbotton)
     {
         m_button = newbotton;
