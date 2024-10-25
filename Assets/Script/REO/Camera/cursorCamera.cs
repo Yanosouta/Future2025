@@ -67,7 +67,10 @@ public class cursorCamera : MonoBehaviour
                 if (Keyboard.current.dKey.isPressed)
                     leftStickInput.x += 1;
             }
+
             MoveCursor(leftStickInput);
+
+            // ここでカーソルの位置に基づいてレイを更新
             SelectObjectUnderCursor();
 
             // AボタンまたはEnterキーが押された場合、カメラを選択されたオブジェクトの前に移動
