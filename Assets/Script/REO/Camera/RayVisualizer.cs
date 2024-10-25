@@ -1,30 +1,35 @@
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class RayVisualizer : MonoBehaviour
 {
-    public LineRenderer lineRenderer; // LineRenderer コンポーネント
-    public Camera mainCamera; // レイを飛ばすカメラ
-    public float rayLength = 100f; // レイの長さ
-    private Vector2 cursorPosition;
+    public float rayLength = 10f; // Rayの長さ
+    private LineRenderer lineRenderer;
 
     void Start()
     {
-        // LineRenderer の設定
-        lineRenderer.positionCount = 2; // レイの開始点と終了点の2つ
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.positionCount = 2; // LineRendererに2つの点を設定
+        lineRenderer.enabled = true; // 最初に有効化しておく
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // カーソル位置からレイを飛ばす
-        Ray ray = mainCamera.ScreenPointToRay(cursorPosition);
+        Vector3 rayOrigin = transform.position; // Rayの始点（オブジェクトの位置）
+        Vector3 rayDirection = transform.forward; // Rayの方向（オブジェクトの前方）
 
-        // LineRenderer にレイの開始点と終了点を設定
-        lineRenderer.SetPosition(0, ray.origin); // レイの始点
-        lineRenderer.SetPosition(1, ray.origin + ray.direction * rayLength); // レイの終点
-    }
+        // 始点とデフォルトの終点を設定
+        lineRenderer.SetPosition(0, rayOrigin);
+        lineRenderer.SetPosition(1, rayOrigin + rayDirection * rayLength);
 
-    public void SetCursorPosition(Vector2 position)
-    {
-        cursorPosition = position;
+        Ray ray = new Ray(rayOrigin, rayDirection);
+        RaycastHit hit;
+
+        // Rayがヒットした場合
+        if (Physics.Raycast(ray, out hit, rayLength))
+        {
+            // ヒットした位置までに調整
+            lineRenderer.SetPosition(1, hit.point);
+        }
     }
 }
