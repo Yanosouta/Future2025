@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FadeController : MonoBehaviour
@@ -11,15 +12,30 @@ public class FadeController : MonoBehaviour
     [SerializeField, Label("フェードにかかる時間")]
     public float fadeDuration = 1.0f;
 
+    private Button[] buttons;
+
     private void Start()
     {
+        buttons = FindObjectsOfType<Button>();
+
         // ゲーム開始時にフェードインを実行
         StartCoroutine(FadeIn());
+    }
+
+    // ボタンを有効化または無効化するメソッド
+    private void SetButtonsInteractable(bool interactable)
+    {
+        foreach (var button in buttons)
+        {
+            button.interactable = interactable;
+        }
     }
 
     // フェードイン処理
     public IEnumerator FadeIn()
     {
+        SetButtonsInteractable(false); // フェード完了後にボタンを有効化
+
         float timer = 0;
         Color color = fadeImage.color;
 
@@ -33,11 +49,15 @@ public class FadeController : MonoBehaviour
 
         color.a = 0;
         fadeImage.color = color; // 完全に透明に
+
+        SetButtonsInteractable(true); // フェード完了後にボタンを有効化
     }
 
-    // フェードアウト処理
-    public IEnumerator FadeOut()
+    // フェードアウト処理とシーン遷移
+    public IEnumerator FadeOutAndChangeScene(string sceneName)
     {
+        SetButtonsInteractable(false); // フェード中はボタンを無効化
+
         float timer = 0;
         Color color = fadeImage.color;
 
@@ -51,5 +71,8 @@ public class FadeController : MonoBehaviour
 
         color.a = 1;
         fadeImage.color = color; // 完全に不透明に
+
+        // フェードアウトが完了したらシーン遷移
+        SceneManager.LoadScene(sceneName);
     }
 }
