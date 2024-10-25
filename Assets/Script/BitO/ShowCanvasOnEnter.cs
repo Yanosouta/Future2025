@@ -9,7 +9,7 @@ public class ShowCanvasOnEnter : MonoBehaviour
     void Update()
     {
         // Enterキーが押されたときにCanvasを表示する
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             canvas.SetActive(!canvas.activeSelf); // Canvasのアクティブ状態を切り替え
         }
