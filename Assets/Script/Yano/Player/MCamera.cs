@@ -59,7 +59,7 @@ public class MainCamera : MonoBehaviour
         }
         foreach (Transform chlid in m_TargetObj.transform)
         {
-            m_TargetList.Add(chlid.gameObject); 
+            m_TargetList.Add(chlid.gameObject);
         }
 
         m_CurrentTarget = m_TargetList[0].transform;
@@ -73,23 +73,27 @@ public class MainCamera : MonoBehaviour
 
         if (m_Delay <= m_Time && m_CameraFlg)
         {
-            if (m_State.GetButtonR())
+            if (m_LeapFlg)
             {
-                m_Count++;
-                //カメラの数を超えたら０に補正
-                if (m_Count >= m_CameraList.Count)
-                    m_Count = 0;
-                //CameraReSet();
-            }
-            if (m_State.GetButtonL())
-            {
-                m_Count--;
-                //-1になったらカメラの数に補正
-                if (m_Count <= -1)
-                    m_Count = m_CameraList.Count - 1;
-                //CameraReSet();
-            }
 
+
+                if (m_State.GetButtonR())
+                {
+                    m_Count++;
+                    //カメラの数を超えたら０に補正
+                    if (m_Count >= m_CameraList.Count)
+                        m_Count = 0;
+                    //CameraReSet();
+                }
+                if (m_State.GetButtonL())
+                {
+                    m_Count--;
+                    //-1になったらカメラの数に補正
+                    if (m_Count <= -1)
+                        m_Count = m_CameraList.Count - 1;
+                    //CameraReSet();
+                }
+            }
             //次のターゲットを入れる
             m_NextTarget = m_TargetList[m_Count].transform;
             m_Time = 0.0f;
@@ -120,9 +124,9 @@ public class MainCamera : MonoBehaviour
     private void TargetSwitch()
     {
         //ターゲット切り替え時にスムーズに移動する
-        if(m_CurrentTarget != m_NextTarget)
+        if (m_CurrentTarget != m_NextTarget)
         {
-            
+
             //カメラの位置をターゲットに移動
             if (m_LeapFlg)
             {
@@ -132,8 +136,8 @@ public class MainCamera : MonoBehaviour
                 * m_Distance);
                 m_LeapFlg = false;
             }
-            
-            m_CameraList[0].transform.position = 
+
+            m_CameraList[0].transform.position =
                 Vector3.MoveTowards(m_CameraList[0].transform.position,
                 m_TargetPos, m_TargetSpeed * Time.deltaTime);
 
@@ -148,8 +152,10 @@ public class MainCamera : MonoBehaviour
     }
     void CameraRotation()
     {
+        if (!m_LeapFlg)
+            return;
         m_Stick = m_controller.GetStick();
-        if (m_Stick != new Vector2(0.0f,0.0f)) 
+        if (m_Stick != new Vector2(0.0f, 0.0f))
         {
             Debug.Log(m_Stick);
         }
@@ -159,7 +165,7 @@ public class MainCamera : MonoBehaviour
         Quaternion rotationQuaternion = Quaternion.Euler(m_Rotiton.x, m_Rotiton.y, 0.0f);
         m_CameraList[m_Count].transform.rotation = rotationQuaternion;
 
-        Vector3 Pos = m_TargetList[m_Count].transform.position -(rotationQuaternion * Vector3.forward * m_Distance);
+        Vector3 Pos = m_TargetList[m_Count].transform.position - (rotationQuaternion * Vector3.forward * m_Distance);
         //カメラをターゲットに向ける
         m_CameraList[m_Count].transform.position = Pos;
         m_CameraList[m_Count].transform.LookAt(m_TargetList[m_Count].transform);
