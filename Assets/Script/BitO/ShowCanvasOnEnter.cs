@@ -11,7 +11,7 @@ public class ShowCanvasOnEnter : MonoBehaviour
         // Enterキーが押されたときにCanvasを表示する
         if (Input.GetKeyDown(KeyCode.A))
         {
-            canvas.SetActive(!canvas.activeSelf); // Canvasのアクティブ状態を切り替え
+            canvas.SetActive(true); // Canvasのアクティブ状態を切り替え
         }
     }
 }
