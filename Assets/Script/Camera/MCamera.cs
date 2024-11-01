@@ -34,6 +34,8 @@ public class MCamera : MonoBehaviour
     private bool m_CameraFlg = true;
     //カメラの回転
     private Vector2 m_Rotiton;
+    //回転させないフラグ
+    private bool m_NoRotitonFlg;
     // 現在カメラが向いているターゲット
     private Transform m_CurrentTarget;
     //次に向くターゲット
@@ -64,6 +66,7 @@ public class MCamera : MonoBehaviour
 
         m_CurrentTarget = m_TargetList[0].transform;
         m_NextTarget = m_TargetList[0].transform;
+        m_NoRotitonFlg = true;
     }
     void Update()
     {
@@ -161,10 +164,17 @@ public class MCamera : MonoBehaviour
 
         if (m_Stick.magnitude > 0.1f)
             Debug.Log("動いてる");
-        m_Rotiton.x += m_Stick.y * m_Speed * Time.deltaTime;
-        m_Rotiton.y += m_Stick.x * m_Speed * Time.deltaTime;
+        if(m_NoRotitonFlg)
+        {
+            m_Rotiton.x += m_Stick.y * m_Speed * Time.deltaTime;
+            m_Rotiton.y += m_Stick.x * m_Speed * Time.deltaTime;
+        }
 
-        Quaternion rotationQuaternion = Quaternion.Euler(m_Rotiton.x, m_Rotiton.y, 0.0f);
+        //下限上限を設ける
+        m_Rotiton.x = Mathf.Clamp(m_Rotiton.x, -75.0f, 75.0f);
+        Quaternion rotationQuaternion = Quaternion.Euler(m_Rotiton.x, -m_Rotiton.y, 0.0f);
+       
+        Debug.Log(m_Rotiton);
         m_CameraList[0].transform.rotation = rotationQuaternion;
 
         Vector3 Pos = m_TargetList[m_Count].transform.position -(rotationQuaternion * Vector3.forward * m_Distance);
