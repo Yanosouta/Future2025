@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class SceneTransition : MonoBehaviour
+public class GameSceneTransition : MonoBehaviour
 {
     [SerializeField, Label("ƒV[ƒ“‘JˆÚæ‚Ì–¼‘O")]
-    public string SceneName = "Game";
+    public string SceneName = "Title";
 
+    public GameObject menuCanvas;   // Canvas(menu)‚ğ‚±‚±‚ÉŠ„‚è“–‚Ä‚Ü‚·
     private FadeController m_fade;
 
     void Start()
@@ -16,6 +19,8 @@ public class SceneTransition : MonoBehaviour
 
     public void HideMenuAndStartFade()
     {
+        menuCanvas.SetActive(false);
+
         StartCoroutine(m_fade.FadeOutAndChangeScene(SceneName));
     }
 }
