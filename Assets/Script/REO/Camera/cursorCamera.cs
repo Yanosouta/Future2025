@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class cursorCamera : MonoBehaviour
 {
@@ -99,6 +100,10 @@ public class cursorCamera : MonoBehaviour
     {
         // カーソル位置からレイを飛ばしてオブジェクトを選択
         Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
+
+        // レイの発射位置を少し上に調整（例えば、0.5単位上に）
+        ray.origin += Vector3.up * 5.0f; // 0.5 の部分は適宜調整
+
         RaycastHit hit;
 
         // レイを画面上に描画（長さ1, 色は青）
@@ -118,14 +123,28 @@ public class cursorCamera : MonoBehaviour
     {
         if (selectedObject != null)
         {
-            // 選択されたオブジェクトの前方にカメラを移動
-            Vector3 direction = (mainCamera.transform.position - selectedObject.transform.position).normalized;
-            Vector3 newPosition = selectedObject.transform.position + direction * cameraDistance;
-
-            // カメラをスムーズに移動させる（必要に応じて補間のスピードを調整可能）
-            mainCamera.transform.position = newPosition;
-            mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを見るようにカメラを回転
+            StartCoroutine(MoveCameraCoroutine());
         }
+    }
+
+    IEnumerator MoveCameraCoroutine()
+    {
+        Vector3 startPosition = mainCamera.transform.position;
+        Vector3 direction = (mainCamera.transform.position - selectedObject.transform.position).normalized;
+        Vector3 targetPosition = selectedObject.transform.position + direction * cameraDistance;
+
+        float elapsedTime = 0f;
+        float duration = 5f; // 5秒間かけて移動
+
+        while (elapsedTime < duration)
+        {
+            mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを常に注視
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        mainCamera.transform.position = targetPosition; // 最終位置を確実に設定
     }
 
     void DisableCursorControl()
