@@ -3515,6 +3515,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: rock_set_03 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1844511393940878295, guid: a5344b98eb8749b48bd7eff8a8c3adae, type: 3}
+      propertyPath: m_TagString
+      value: KAPIBARA
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

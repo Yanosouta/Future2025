@@ -100,9 +100,7 @@ public class cursorCamera : MonoBehaviour
     {
         // カーソル位置からレイを飛ばしてオブジェクトを選択
         Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-
-        // レイの発射位置を少し上に調整（例えば、0.5単位上に）
-        ray.origin += Vector3.up * 5.0f; // 0.5 の部分は適宜調整
+        ray.origin += Vector3.up * 7.0f; // レイの発射位置を上に調整
 
         RaycastHit hit;
 
@@ -111,7 +109,15 @@ public class cursorCamera : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            selectedObject = hit.collider.gameObject;
+            // 「KAPIBARA」タグが付いているオブジェクトのみ選択
+            if (hit.collider.gameObject.CompareTag("KAPIBARA"))
+            {
+                selectedObject = hit.collider.gameObject;
+            }
+            else
+            {
+                selectedObject = null;
+            }
         }
         else
         {
@@ -119,9 +125,11 @@ public class cursorCamera : MonoBehaviour
         }
     }
 
+
     void MoveCameraToSelectedObject()
     {
-        if (selectedObject != null)
+        // selectedObject が null でなく、「KAPIBARA」タグが付いたオブジェクトの場合のみ移動
+        if (selectedObject != null && selectedObject.CompareTag("KAPIBARA"))
         {
             StartCoroutine(MoveCameraCoroutine());
         }
@@ -139,7 +147,7 @@ public class cursorCamera : MonoBehaviour
         while (elapsedTime < duration)
         {
             mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-            mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを常に注視
+            mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを注視
             elapsedTime += Time.deltaTime;
             yield return null;
         }
