@@ -30,6 +30,8 @@ public class MCamera : MonoBehaviour
     private List<GameObject> m_TargetList;
     //カメラの初期値を格納
     private List<GameObject> m_CameraStorageList;
+    //子オブジェクトの数を格納
+    private int m_ChildCount;
     //カメラの切り替えを長押しで行わないためのフラグ
     private bool m_CameraFlg = true;
     //カメラの回転
@@ -63,7 +65,7 @@ public class MCamera : MonoBehaviour
         {
             m_TargetList.Add(chlid.gameObject); 
         }
-
+        m_ChildCount = m_TargetObj.transform.childCount;
         m_CurrentTarget = m_TargetList[0].transform;
         m_NextTarget = m_TargetList[0].transform;
         m_NoRotitonFlg = true;
@@ -74,6 +76,16 @@ public class MCamera : MonoBehaviour
             return;
         m_button = m_controller.GetButton();
         m_Stick = m_controller.GetStick();
+        //カピバラが増えたら実行(重くなったら別の方法を考える)
+        if(m_TargetObj.transform.childCount > m_ChildCount)
+        {
+            m_TargetList.Clear();
+            foreach (Transform chlid in m_TargetObj.transform)
+            {
+                m_TargetList.Add(chlid.gameObject);
+            }
+            m_ChildCount = m_TargetObj.transform.childCount;
+        }
 
         if (m_Delay <= m_Time && m_CameraFlg)
         {
