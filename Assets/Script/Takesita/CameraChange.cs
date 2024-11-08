@@ -4,29 +4,52 @@ using UnityEngine;
 
 public class CameraChange : MonoBehaviour
 {
-    public GameObject[] Camera;
-    int camNum = 0;
-    // Start is called before the first frame update
+    public List<GameObject> cameras = new List<GameObject>(); // カメラを格納するリスト
+    private int camNum = 0;
+
     void Start()
     {
-        
+        // 最初にすべてのカメラを非アクティブ化
+        foreach (GameObject cam in cameras)
+        {
+            cam.SetActive(false);
+        }
+
+        // 最初のカメラをアクティブに設定
+        if (cameras.Count > 0)
+        {
+            cameras[camNum].SetActive(true);
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            camNum++;
-            if(camNum >= Camera.Length)
-            {
-                camNum = 0;
-            }
-            for (int i = 0; i < Camera.Length; i++)
-            {
-                Camera[i].SetActive(false);
-            }
-            Camera[camNum].SetActive(true);
-        }      
+            // 現在のカメラを非アクティブ化
+            cameras[camNum].SetActive(false);
+
+            // 次のカメラへ
+            camNum = (camNum + 1) % cameras.Count;
+
+            // 新しいカメラをアクティブ化
+            cameras[camNum].SetActive(true);
+        }
+    }
+
+    // 外部からカメラを追加するためのメソッド
+    public void AddCamera(GameObject newCamera)
+    {
+        if (!cameras.Contains(newCamera))
+        {
+            cameras.Add(newCamera); // 新しいカメラをリストに追加
+            newCamera.SetActive(false); // 追加されたカメラを非表示にする
+        }
+
+        // 最初のカメラをアクティブ化
+        if (cameras.Count == 1)
+        {
+            cameras[0].SetActive(true);
+        }
     }
 }
