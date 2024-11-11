@@ -339,8 +339,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2938347e-44fd-4b43-b78c-a76198e0b359",
-                    "path": "<Gamepad>/select",
+                    "id": "52bcf590-ba2e-4771-99d3-547b7e40eeeb",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -350,8 +350,8 @@
                 },
                 {
                     "name": "",
-                    "id": "52bcf590-ba2e-4771-99d3-547b7e40eeeb",
-                    "path": "<Keyboard>/escape",
+                    "id": "95d5db7c-a7c1-476e-a88b-ca1c71873301",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
