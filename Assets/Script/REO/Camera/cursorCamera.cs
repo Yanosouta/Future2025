@@ -75,7 +75,7 @@ public class cursorCamera : MonoBehaviour
             SelectObjectUnderCursor();
 
             // AボタンまたはEnterキーが押された場合、カメラを選択されたオブジェクトの前に移動
-            if (selectedObject != null && (Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.zKey.wasPressedThisFrame))
+            if (isCursorEnabled && Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.enterKey.wasPressedThisFrame) //selectedObject != null && () 
             {
                 MoveCameraToSelectedObject();
                 DisableCursorControl(); // カーソル操作を無効にする
@@ -100,7 +100,7 @@ public class cursorCamera : MonoBehaviour
     {
         // カーソル位置からレイを飛ばしてオブジェクトを選択
         Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-        ray.origin += Vector3.up * 7.0f; // レイの発射位置を上に調整
+        ray.origin += Vector3.up * 0.5f; // レイの発射位置を上に調整
 
         RaycastHit hit;
 
@@ -113,17 +113,21 @@ public class cursorCamera : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("KAPIBARA"))
             {
                 selectedObject = hit.collider.gameObject;
+                Debug.Log("KAPIBARAタグのオブジェクトを選択しました: " + selectedObject.name);
             }
             else
             {
                 selectedObject = null;
+                Debug.Log("KAPIBARAタグがありません: " + hit.collider.gameObject.name);
             }
         }
         else
         {
             selectedObject = null;
+            Debug.Log("何も選択されていません");
         }
     }
+
 
 
     void MoveCameraToSelectedObject()
