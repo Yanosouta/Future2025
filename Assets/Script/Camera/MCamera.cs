@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class MCamera : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class MCamera : MonoBehaviour
     ControllerState m_State;
     ControllerBase m_controller;
     ControllerBase.ControllerButton m_button;
+
+    Transform m_MainCamera;
 
     static public int m_Camera = 0;       //カメラの番号を格納
     static public int m_Count = 0;
@@ -65,6 +68,9 @@ public class MCamera : MonoBehaviour
         {
             m_TargetList.Add(chlid.gameObject); 
         }
+
+        m_MainCamera  = m_CameraList[0].transform.GetChild(0);
+
         m_ChildCount = m_TargetObj.transform.childCount;
         m_CurrentTarget = m_TargetList[0].transform;
         m_NextTarget = m_TargetList[0].transform;
@@ -144,23 +150,32 @@ public class MCamera : MonoBehaviour
         //ターゲット切り替え時にスムーズに移動する
         if(m_CurrentTarget != m_NextTarget)
         {
-            
+            m_TargetList.Clear();
+            foreach (Transform chlid in m_TargetObj.transform)
+            {
+                m_TargetList.Add(chlid.gameObject);
+            }
+
             //カメラの位置をターゲットに移動
             if (m_LeapFlg)
             {
                 m_TargetPos = m_NextTarget.transform.position
                 - (Quaternion.Euler(m_Rotiton.x, m_Rotiton.y, 0.0f)
                 * Vector3.forward
-                * m_Distance);
+                /** m_Distance*/);
                 m_LeapFlg = false;
             }
-            
+
+            //Vector3 direction = (m_TargetPos - m_CameraList[0].transform.position).normalized;
+            //m_CameraList[0].transform.position += direction * m_Speed * Time.deltaTime;
+
             m_CameraList[0].transform.position = 
                 Vector3.MoveTowards(m_CameraList[0].transform.position,
                 m_TargetPos, m_TargetSpeed * Time.deltaTime);
 
+            
             //ターゲットに近づいたらターゲットif文をぬける
-            if (Vector3.Distance(m_CameraList[0].transform.position, m_TargetPos) < 0.1f)
+            if (Vector3.Distance(m_CameraList[0].transform.position, m_TargetPos) <=  0.1f)
             {
                 m_CurrentTarget = m_NextTarget;
                 m_LeapFlg = true;
@@ -187,12 +202,12 @@ public class MCamera : MonoBehaviour
         Quaternion rotationQuaternion = Quaternion.Euler(m_Rotiton.x, -m_Rotiton.y, 0.0f);
        
         Debug.Log(m_Rotiton);
-        m_CameraList[0].transform.rotation = rotationQuaternion;
+        m_MainCamera.transform.rotation = rotationQuaternion;
 
         Vector3 Pos = m_TargetList[m_Count].transform.position -(rotationQuaternion * Vector3.forward * m_Distance);
         //カメラをターゲットに向ける
-        m_CameraList[0].transform.position = Pos;
-        m_CameraList[0].transform.LookAt(m_TargetList[m_Count].transform);
+        m_MainCamera.transform.position = Pos;
+        m_MainCamera.transform.LookAt(m_TargetList[m_Count].transform);
     }
     void CameraReSet()
     {
