@@ -6,10 +6,11 @@ public class cursorCamera : MonoBehaviour
 {
     ControllerState m_State;
     ControllerBase m_Stick;
+    MCamera m_Camera;
 
     public GameObject cursor; // カーソルとして使用するUIオブジェクト
     public float cursorSpeed = 100f; // カーソルの移動速度
-    public Camera mainCamera; // メインカメラ
+    public GameObject mainCamera; // メインカメラ
     public float cameraDistance = 2f; // オブジェクトの目の前の距離
 
     private bool isCursorVisible = false;
@@ -17,6 +18,7 @@ public class cursorCamera : MonoBehaviour
     private Vector2 cursorPosition;
     private GameObject selectedObject = null; // 選択されたオブジェクト
 
+    private GameObject ParentObj;
     void Start()
     {
         cursor.SetActive(false); // ゲーム開始時はカーソルを非表示に
@@ -24,6 +26,9 @@ public class cursorCamera : MonoBehaviour
                                                                            // cursorが設定されているか確認
         m_State = GetComponent<ControllerState>();
         m_Stick = GetComponent<ControllerBase>();
+
+        ParentObj = mainCamera.transform.root.gameObject;
+        m_Camera = ParentObj.GetComponent<MCamera>();
     }
 
     void Update()
@@ -100,7 +105,7 @@ public class cursorCamera : MonoBehaviour
     {
         // カーソル位置からレイを飛ばしてオブジェクトを選択
         Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-        ray.origin += Vector3.up * 0.5f; // レイの発射位置を上に調整
+        ray.origin += Vector3.up * 0.8f; // レイの発射位置を上に調整
 
         RaycastHit hit;
 
@@ -135,7 +140,12 @@ public class cursorCamera : MonoBehaviour
         // selectedObject が null でなく、「KAPIBARA」タグが付いたオブジェクトの場合のみ移動
         if (selectedObject != null && selectedObject.CompareTag("KAPIBARA"))
         {
-            StartCoroutine(MoveCameraCoroutine());
+            m_Camera.GetCursorCamera(selectedObject);
+
+
+
+
+            //StartCoroutine(MoveCameraCoroutine());
         }
     }
 
