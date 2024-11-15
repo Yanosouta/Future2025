@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/BitO/Title.unity
+    path: Assets/Scenes/Oguri/BitO/Title.unity
     guid: 281e710b0297a744c92e4ecd92f0dd74
   - enabled: 1
-    path: Assets/Scenes/BitO/Game.unity
+    path: Assets/Scenes/Oguri/BitO/Game.unity
     guid: eb1807ea3cd35d44f80662ff71c5e445
   m_configObjects: {}

@@ -48,9 +48,9 @@ public class KapibaraSpawner : MonoBehaviour
 
         // ランダムな位置を生成するための範囲を設定
         Vector3 randomPosition = new Vector3(
-            Random.Range(-118f, -147f), // X軸の範囲
-            0,  // Y軸は0に固定
-            Random.Range(11f, -4f)  // Z軸の範囲
+            Random.Range(-28f, -13f), // X軸の範囲
+            -12.64f,  // Y軸は0に固定
+            Random.Range(-5f, 4f)  // Z軸の範囲
         );
 
         // 生成する位置を地面にスナップ
