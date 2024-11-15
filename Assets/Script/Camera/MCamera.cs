@@ -217,6 +217,24 @@ public class MCamera : MonoBehaviour
             m_CameraList[i].gameObject.transform.rotation = m_CameraStorageList[i].gameObject.transform.rotation;
         }
     }
+
+    public void GetCursorCamera(GameObject gameObject)
+    {
+        for(int i = 0; i < m_TargetList.Count;i++)
+        {
+            if (m_TargetList[i].gameObject == gameObject)
+            {
+                m_Count = i;
+                //次のターゲットを入れる
+                m_NextTarget = m_TargetList[m_Count].transform;
+                m_Time = 0.0f;
+                m_CameraFlg = false;
+            }
+            
+        }
+
+
+    }
 }
 
 
