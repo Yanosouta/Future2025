@@ -11,8 +11,15 @@ public class MCamera : MonoBehaviour
     GameObject m_TargetObj;
     [Header("回転の速さ"), SerializeField]
     private float m_Speed = 1;
+    [Header("ズームインズームアウトの速さ"), SerializeField]
+    private float m_ZoomSpeed = 2;
     [Header("ターゲットとカメラの距離"), SerializeField]
     private float m_Distance = 2;
+    [Header("ターゲットとカメラのズームの近さ"), SerializeField]
+    private float m_NearDistance = 1;
+    [Header("ターゲットとカメラのズームの遠さ"), SerializeField]
+    private float m_FarDistance = 5;
+
     [Header("ターゲットまで移動する速さ"), SerializeField]
     private float m_TargetSpeed = 0.5f;
 
@@ -131,7 +138,8 @@ public class MCamera : MonoBehaviour
 
         //カメラを回転させる
         CameraRotation();
-
+        //ズームインズームアウト
+        TargetScaling();
         //カメラに切り替え
         //CameraSwitch();
         m_Time += Time.deltaTime;
@@ -144,6 +152,19 @@ public class MCamera : MonoBehaviour
             m_CameraList[i].SetActive(false);
         }
         m_CameraList[m_Count].SetActive(true);
+    }
+    private void TargetScaling()
+    {
+        //ズームイン
+        if(m_State.GetButtonX() && m_Distance >= m_NearDistance)
+        {
+            m_Distance -= m_ZoomSpeed * Time.deltaTime;
+        }
+        //ズームアウト
+        if(m_State.GetButtonY() && m_Distance <= m_FarDistance)
+        {
+            m_Distance += m_ZoomSpeed * Time.deltaTime;
+        }
     }
     private void TargetSwitch()
     {
@@ -199,7 +220,7 @@ public class MCamera : MonoBehaviour
 
         //下限上限を設ける
         m_Rotiton.x = Mathf.Clamp(m_Rotiton.x, -75.0f, 75.0f);
-        Quaternion rotationQuaternion = Quaternion.Euler(m_Rotiton.x, -m_Rotiton.y, 0.0f);
+        Quaternion rotationQuaternion = Quaternion.Euler(-m_Rotiton.x, -m_Rotiton.y, 0.0f);
        
         Debug.Log(m_Rotiton);
         m_MainCamera.transform.rotation = rotationQuaternion;

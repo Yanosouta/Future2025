@@ -56945,6 +56945,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1967321397705702496, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2672807587469699814, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
       propertyPath: m_Distance
       value: 5
@@ -56953,9 +56957,53 @@ PrefabInstance:
       propertyPath: m_TargetObj
       value: 
       objectReference: {fileID: 733160920}
+    - target: {fileID: 2704270308417231340, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4197480228304079542, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
       propertyPath: m_Name
       value: CameraManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_ActionId
+      value: 1d988d67-6428-48ca-947d-6091dc040d1f
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_ActionName
+      value: Player/Button_Y[/XInputControllerWindows/buttonNorth,/Keyboard/v,/Keyboard/p]
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1607077905}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Button_Y
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ControllerBase, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962906572417355770, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7137767027871623126, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -56995,6 +57043,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7137767027871623126, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900192018186317675, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -57228,6 +57280,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 915ac35a5aca31d4c9575633be0f6b82, type: 3}
+--- !u!114 &1607077905 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1200258665963316629, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
+  m_PrefabInstance: {fileID: 1600109231}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a5dbbbc63ed174b8e18bf590728752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1607521481
 PrefabInstance:
   m_ObjectHideFlags: 0
