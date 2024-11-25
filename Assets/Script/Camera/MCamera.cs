@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -57,6 +59,10 @@ public class MCamera : MonoBehaviour
     private bool m_LeapFlg = true;
     //スティックの情報を格納
     Vector2 m_Stick;
+
+    // 前フレームで遮蔽物として扱われていたゲームオブジェクトを格納。
+    public GameObject[] m_PrevRaycast;
+    public List<GameObject> m_RaycastHitsList = new List<GameObject>();
     void Start()
     {
         m_State = GetComponent<ControllerState>();
@@ -140,6 +146,10 @@ public class MCamera : MonoBehaviour
         CameraRotation();
         //ズームインズームアウト
         TargetScaling();
+
+        //障害物を透明にする
+        ObjectGlasschange();
+
         //カメラに切り替え
         //CameraSwitch();
         m_Time += Time.deltaTime;
@@ -229,6 +239,42 @@ public class MCamera : MonoBehaviour
         //カメラをターゲットに向ける
         m_MainCamera.transform.position = Pos;
         m_MainCamera.transform.LookAt(m_TargetList[m_Count].transform);
+    }
+    //カメラとターゲットの間のオブジェクトを透明にする
+    void ObjectGlasschange()
+    {
+        //オブジェクト間のベクトルを得る
+        Vector3 difference = (m_TargetList[m_Count].transform.position - m_MainCamera.transform.position);
+        //normalizedベクトルの正規化を行う
+        Vector3 direction = difference.normalized;
+        //Ray(開始地点、進む方向)
+        Ray ray = new Ray(m_TargetList[m_Count].transform.position, difference);
+        RaycastHit[] raycastHits = Physics.RaycastAll(ray);
+
+        //前フレームで障害物であった全てのGameObjectを保持
+        m_PrevRaycast = m_RaycastHitsList.ToArray();
+        m_RaycastHitsList.Clear();
+
+        foreach(RaycastHit hit in raycastHits)
+        {
+            GlassMaterial glassMaterial = hit.collider.GetComponent<GlassMaterial>();
+            if(hit.collider.tag == "Stage")
+            {
+                glassMaterial.GlassMaterialInvoke();
+                //次のフレームで使いたいため、不透明にしたオブジェクトを追加する
+                m_RaycastHitsList.Add(hit.collider.gameObject);
+            }
+            
+        }
+        foreach(GameObject gameObject in m_PrevRaycast.Except<GameObject>(m_RaycastHitsList))
+        {
+            GlassMaterial noglassMaterial = gameObject.GetComponent<GlassMaterial>();
+            //障害物でなくなったGameObjectを不透明に戻す
+            if(gameObject != null)
+            {
+                noglassMaterial.NotGlassMaterialInvoke();
+            }
+        }
     }
     void CameraReSet()
     {
