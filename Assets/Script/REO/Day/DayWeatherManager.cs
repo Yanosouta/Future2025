@@ -1,62 +1,64 @@
 using UnityEngine;
 using UnityEngine.UI; // UIテキストの使用に必要
+using System;
+using System.Collections.Generic;
 
 public class DayWeatherManager : MonoBehaviour
 {
     public enum TimeOfDay
     {
-        Morning,
-        Afternoon,
-        Evening,
-        Night
+        Morning = 0,   //6~10
+        Afternoon, //10~16
+        Evening,   //16~18
+        Night      //18~6
     }
+    //15度/h
 
     public enum Weather
     {
-        Sunny,
+        Sunny = 0,
         Cloudy,
         Rainy
     }
 
-    public TimeOfDay currentTimeOfDay { get; private set; }
-    public Weather currentWeather { get; private set; }
+    protected static TimeOfDay currentTimeOfDay;
+    protected static Weather currentWeather;
 
-    public Text weatherTimeText; // 天気と時間を表示するUIテキスト
+    protected float rot = 1.0f;
 
-    void Start()
+    protected Text weatherTimeText; // 天気と時間を表示するUIテキスト
+
+    public static DayWeatherManager instance;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+
+        // ルートオブジェクトにDontDestroyOnLoadを適用
+        if (transform.parent == null) // ルートオブジェクトか確認
+        {
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            // ルートオブジェクトでなければルートを取得
+            GameObject rootObject = transform.root.gameObject;
+            DontDestroyOnLoad(rootObject); // ルートオブジェクトに適用
+        }
+    }
+
+    private void Start()
     {
         // 初期値の設定
         currentTimeOfDay = TimeOfDay.Morning;
         currentWeather = Weather.Sunny;
 
-        UpdateEnvironment();
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T)) // キー操作で時間帯を切り替える
-        {
-            CycleTimeOfDay();
-        }
-
-        if (Input.GetKeyDown(KeyCode.W)) // キー操作で天気をランダムに変更する
-        {
-            SetRandomWeather();
-        }
-    }
-
-    // 時間帯を順番に変更
-    public void CycleTimeOfDay()
-    {
-        currentTimeOfDay = (TimeOfDay)(((int)currentTimeOfDay + 1) % System.Enum.GetValues(typeof(TimeOfDay)).Length);
-        UpdateEnvironment();
-    }
-
-    // 天気をランダムに設定
-    public void SetRandomWeather()
-    {
-        int weatherCount = System.Enum.GetValues(typeof(Weather)).Length;
-        currentWeather = (Weather)Random.Range(0, weatherCount);
         UpdateEnvironment();
     }
 
@@ -69,18 +71,6 @@ public class DayWeatherManager : MonoBehaviour
     public void SetWeather(Weather newWeather)
     {
         currentWeather = newWeather;
-        UpdateEnvironment();
-    }
-
-    // 他のスクリプトから時間帯をセットするメソッド
-    // ---------------使用例--------------------
-    // 時間を夜に設定
-    // DayWeaterManager weatherManager;
-    // weatherManager.SetTimeOfDay(DayWeatherManager.TimeOfDay.Night);
-    // -----------------------------------------
-    public void SetTimeOfDay(TimeOfDay newTimeOfDay)
-    {
-        currentTimeOfDay = newTimeOfDay;
         UpdateEnvironment();
     }
 
@@ -103,10 +93,10 @@ public class DayWeatherManager : MonoBehaviour
     }
 
     // 環境を更新するメソッド
-    void UpdateEnvironment()
+    public void UpdateEnvironment()
     {
-        Debug.Log("Current time of day: " + currentTimeOfDay);
-        Debug.Log("Current weather: " + currentWeather);
+        //Debug.Log("Manajer Current time of day: " + currentTimeOfDay);
+        //Debug.Log("Current weather: " + currentWeather);
         
         // テキストに現在の天気と時間を表示
         if (weatherTimeText != null)
@@ -115,5 +105,31 @@ public class DayWeatherManager : MonoBehaviour
         }
         // 環境に応じた更新処理（例：ライトやエフェクトの変更など）をここに追加
 
+    }
+
+
+
+    /// <summary>
+    /// 太陽の回転を停止する(時間経過止まる)
+    /// </summary>
+    public void StopDirectionLightRotate()
+    {
+        rot = 0.0f;
+    }
+
+    /// <summary>
+    /// 太陽の回転を再開する(時間経過を元に戻す)
+    /// </summary>
+    public void ReStartDirectionLIghtRotate()
+    {
+        rot = 1.0f;
+    }
+
+    /// <summary>
+    /// 太陽の回転を倍速にする(f倍速)
+    /// </summary>
+    public void SetDirectionLightRotate(float f)
+    {
+        rot = f;
     }
 }
