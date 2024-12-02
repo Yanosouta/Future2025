@@ -27,7 +27,7 @@ public class GlassMaterial : MonoBehaviour
         mpb.SetColor(Shader.PropertyToID("_Color"), color);
         for (int i = 0; i < meshRenderers.Length; i++)
         {
-            meshRenderers[i].GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse ZWrite");
+            meshRenderers[i].GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
             meshRenderers[i].SetPropertyBlock(mpb);
         }
     }
@@ -37,7 +37,7 @@ public class GlassMaterial : MonoBehaviour
         mpb.SetColor(Shader.PropertyToID("_Color"), color);
         for (int i = 0; i < meshRenderers.Length; i++)
         {
-            meshRenderers[i].GetComponent<Renderer>().material.shader = Shader.Find("Mobile/Diffuse");
+            meshRenderers[i].GetComponent<Renderer>().material.shader = Shader.Find("Legacy Shaders/Diffuse");
             meshRenderers[i].SetPropertyBlock(mpb);
         }
     }

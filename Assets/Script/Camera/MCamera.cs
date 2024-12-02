@@ -248,8 +248,10 @@ public class MCamera : MonoBehaviour
         //normalizedベクトルの正規化を行う
         Vector3 direction = difference.normalized;
         //Ray(開始地点、進む方向)
-        Ray ray = new Ray(m_TargetList[m_Count].transform.position, difference);
+        Ray ray = new Ray(m_MainCamera.transform.position, difference);
         RaycastHit[] raycastHits = Physics.RaycastAll(ray);
+
+        Debug.DrawRay(m_MainCamera.transform.position, difference, Color.white, 1.0f, false);
 
         //前フレームで障害物であった全てのGameObjectを保持
         m_PrevRaycast = m_RaycastHitsList.ToArray();
@@ -257,10 +259,14 @@ public class MCamera : MonoBehaviour
 
         foreach(RaycastHit hit in raycastHits)
         {
-            GlassMaterial glassMaterial = hit.collider.GetComponent<GlassMaterial>();
-            if(hit.collider.tag == "Stage")
+            
+            if(hit.collider.CompareTag("stage"))
             {
-                glassMaterial.GlassMaterialInvoke();
+                GlassMaterial glassMaterial = hit.collider.GetComponent<GlassMaterial>();
+                if (glassMaterial != null)
+                {
+                    glassMaterial.GlassMaterialInvoke();
+                }
                 //次のフレームで使いたいため、不透明にしたオブジェクトを追加する
                 m_RaycastHitsList.Add(hit.collider.gameObject);
             }
@@ -268,11 +274,14 @@ public class MCamera : MonoBehaviour
         }
         foreach(GameObject gameObject in m_PrevRaycast.Except<GameObject>(m_RaycastHitsList))
         {
-            GlassMaterial noglassMaterial = gameObject.GetComponent<GlassMaterial>();
-            //障害物でなくなったGameObjectを不透明に戻す
-            if(gameObject != null)
+            if (gameObject != null)
             {
-                noglassMaterial.NotGlassMaterialInvoke();
+                GlassMaterial noglassMaterial = gameObject.GetComponent<GlassMaterial>();
+                //障害物でなくなったGameObjectを不透明に戻す
+                if (noglassMaterial != null)
+                {
+                    noglassMaterial.NotGlassMaterialInvoke();
+                }
             }
         }
     }
