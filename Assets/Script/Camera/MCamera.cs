@@ -248,8 +248,19 @@ public class MCamera : MonoBehaviour
         //normalizedベクトルの正規化を行う
         Vector3 direction = difference.normalized;
         //Ray(開始地点、進む方向)
-        Ray ray = new Ray(m_MainCamera.transform.position, difference);
-        RaycastHit[] raycastHits = Physics.RaycastAll(ray);
+        //Ray ray = new Ray(m_MainCamera.transform.position, difference);
+        //RaycastHit[] raycastHits = Physics.RaycastAll(ray);
+        
+        // BoxCast の幅、高さ、奥行きを設定
+        Vector3 boxHalfExtents = new Vector3(0.5f, 0.5f, 0.5f); // 半径を設定
+        // BoxCast を実行
+        RaycastHit[] boxCastHits = Physics.BoxCastAll(
+        m_MainCamera.transform.position,  // BoxCast の開始位置
+        boxHalfExtents,                   // Box の半径
+        direction,                        // Box の進行方向
+        Quaternion.identity,              // Box の回転 (今回はデフォルト)
+        difference.magnitude              // BoxCast の距離
+    );
 
         Debug.DrawRay(m_MainCamera.transform.position, difference, Color.white, 1.0f, false);
 
@@ -257,7 +268,8 @@ public class MCamera : MonoBehaviour
         m_PrevRaycast = m_RaycastHitsList.ToArray();
         m_RaycastHitsList.Clear();
 
-        foreach(RaycastHit hit in raycastHits)
+
+        foreach(RaycastHit hit in boxCastHits)
         {
             
             if(hit.collider.CompareTag("stage"))
