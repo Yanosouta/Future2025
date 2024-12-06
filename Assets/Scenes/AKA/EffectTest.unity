@@ -5333,7 +5333,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1147132905}
-  - component: {fileID: 1147132906}
   m_Layer: 0
   m_Name: EffectCheck
   m_TagString: Untagged
@@ -5356,24 +5355,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1147132906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147132904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TimingOfUpdate: 0
-  EmitterScale: 0
-  TimeScale: 0
-  effectAsset: {fileID: 11400000, guid: 15136ce31c962a343885988563dc3510, type: 2}
-  playOnStart: 1
-  isLooping: 1
 --- !u!1 &1264879723
 GameObject:
   m_ObjectHideFlags: 0
