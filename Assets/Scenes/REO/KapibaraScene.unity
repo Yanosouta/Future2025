@@ -12647,13 +12647,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursor: {fileID: 256171716}
   cursorSpeed: 100
-  mainCamera: {fileID: 1502533519}
+  mainCamera: {fileID: 1502533513}
   cameraDistance: 2
---- !u!20 &1502533519 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 4217448979573983749, guid: 08748f9ef9148ce45b3a353477e2aeb9, type: 3}
-  m_PrefabInstance: {fileID: 1927160436}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1506573058
 PrefabInstance:
   m_ObjectHideFlags: 0
