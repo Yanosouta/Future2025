@@ -15,7 +15,7 @@ public class KAPIBARA_AI : MonoBehaviour
     // ステートの出現確率
     [Range(0, 100)] public int idleWeight = 50; // Idleの重み
     [Range(0, 100)] public int walkingWeight = 30; // Walkingの重み
-    [Range(0, 100)] public int eatingWeight = 20; // Eatingの重み
+    //[Range(0, 100)] public int eatingWeight = 20; // Eatingの重み
 
 
     public float idleDuration = 2.0f;// Idleステートの待機時間
@@ -35,6 +35,13 @@ public class KAPIBARA_AI : MonoBehaviour
     [SerializeField] private GameObject destinationMarkerPrefab; // 目印Prefabを指定する
     private GameObject currentMarker; // 現在の目印オブジェクトを保持
 
+    public LayerMask foodLayer;  // エサのレイヤー
+    public float detectionRadius = 5f;  // エサを探す半径
+
+    private GameObject currentFood; // 現在食べているエサを保持する変数
+    public float eatingDistance = 1.5f; // エサを食べる距離のしきい値
+    private float timeToEat = 2.0f; // 食べるまでの遅延時間（秒）
+    private float eatTimer = 0.0f; // タイマー
 
     void Start()
     {
@@ -79,14 +86,25 @@ public class KAPIBARA_AI : MonoBehaviour
             {
                 case AIState.Idle:
                     Debug.Log("状態: Idle");
-                    yield return new WaitForSeconds(idleDuration);
-                    // ランダムに次のステートを決定
-                    currentState = GetWeightedRandomState(); // 重み付けランダムで次のステートを決定
+                    // エサが近くにあるかをチェック
+                    if (IsFoodNearby())
+                    {
+                        Debug.Log("エサが近くにあります。Eating状態に遷移します。");
+                        // エサが近くにあればEatingステートに遷移
+                        currentState = AIState.Eating;
+                    }
+                    else
+                    {
+                        Debug.Log("エサが近くにありません。ランダムに次のステートを選びます。");
+                        // エサが近くになければランダムに次のステートを決定
+                        yield return new WaitForSeconds(idleDuration);
+                        currentState = GetWeightedRandomState();
+                    }
                     break;
 
                 case AIState.Walking:
                     Debug.Log("状態: Walking");
-                    animator.SetInteger("state", 1); // Walkingアニメーション
+                    //animator.SetInteger("state", 1); // Walkingアニメーション
                     SetNewDestination(); // 目的地を設定する
                     yield return new WaitUntil(() => !agent.pathPending && agent.remainingDistance < 0.5f); // 目的地到着まで待機
                     currentState = AIState.Idle; // WalkingからIdleへ遷移
@@ -95,6 +113,7 @@ public class KAPIBARA_AI : MonoBehaviour
                 case AIState.Eating:
                     Debug.Log("状態: Eating");
                     // Eatingが終わったらIdleに戻る
+                    //DestroyNearbyFood();
                     yield return new WaitForSeconds(eatingDuration);
                     currentState = AIState.Idle; // EatingからIdleへ遷移
                     break;
@@ -145,12 +164,53 @@ public class KAPIBARA_AI : MonoBehaviour
     public void Eating()
     {
         animator.SetInteger("state", 2); // Eatingアニメーションを再生
-    }
 
+        if (currentFood != null)
+        {
+            // エサの方向を向く
+            Vector3 direction = (currentFood.transform.position - transform.position).normalized;
+            if (direction.magnitude > 0)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            }
+
+            // エサに向かって移動する
+            float distanceToFood = Vector3.Distance(transform.position, currentFood.transform.position);
+
+            if (distanceToFood > eatingDistance)
+            {
+                // エサに向かって移動（NavMeshAgentを使用）
+                agent.SetDestination(currentFood.transform.position);
+            }
+            else
+            {
+                // 食べるタイミングの遅延
+                if (eatTimer < timeToEat)
+                {
+                    eatTimer += Time.deltaTime; // タイマーを進める
+                }
+                else
+                {
+                    // タイマーが経過した後に食べる
+                    Destroy(currentFood);
+                    Debug.Log("エサを食べて削除しました");
+
+                    // エサを食べた後、ターゲットをクリア
+                    currentFood = null;
+
+                    // タイマーのリセット
+                    eatTimer = 0.0f;
+                    // Eatingステートを終了し、Idleステートに戻る
+                    currentState = AIState.Idle;
+                }
+            }
+        }
+    }
     private AIState GetWeightedRandomState()
     {
         // 重みの合計を計算
-        int totalWeight = idleWeight + walkingWeight + eatingWeight;
+        int totalWeight = idleWeight + walkingWeight;// + eatingWeight;
         int randomValue = Random.Range(0, totalWeight);
 
         // ランダムな値に基づいてステートを決定
@@ -158,14 +218,14 @@ public class KAPIBARA_AI : MonoBehaviour
         {
             return AIState.Idle;
         }
-        else if (randomValue < idleWeight + walkingWeight)
+        else //if (randomValue < idleWeight + walkingWeight)
         {
             return AIState.Walking;
         }
-        else
-        {
-            return AIState.Eating;
-        }
+        //else
+        //{
+        //    return AIState.Eating;
+        //}
     }
 
     private void SetNewDestination()
@@ -195,4 +255,34 @@ public class KAPIBARA_AI : MonoBehaviour
 
         return navHit.position;
     }
+
+    private bool IsFoodNearby()
+    {
+        // 指定された半径内にエサオブジェクトが存在するかをチェック
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, foodLayer);
+        Debug.Log($"検出したエサの数: {colliders.Length}");
+
+        // 食べる対象を設定（最初に見つかったエサ）
+        if (colliders.Length > 0 && currentFood == null)
+        {
+            currentFood = colliders[0].gameObject;
+        }
+
+        return colliders.Length > 0;
+    }
+
+
+    private void DestroyNearbyFood()
+    {
+        if (currentFood != null)
+        {
+            // 現在ターゲットにしているエサをDestroy
+            Destroy(currentFood);
+            Debug.Log("エサオブジェクトをDestroyしました");
+
+            // 食べ終わったらターゲットをクリア
+            currentFood = null;
+        }
+    }
+
 }

@@ -199,7 +199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleWeight: 60
   walkingWeight: 20
-  eatingWeight: 20
   idleDuration: 1
   eatingDuration: 5
   IdleRotationSpeed: 5
