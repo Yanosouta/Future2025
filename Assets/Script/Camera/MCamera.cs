@@ -60,8 +60,7 @@ public class MCamera : MonoBehaviour
     //スティックの情報を格納
     Vector2 m_Stick;
 
-    //一回目だけ処理をするフラグ
-    private bool m_OneFlg = true;
+    //メニューフラグ
     // 前フレームで遮蔽物として扱われていたゲームオブジェクトを格納。
     public GameObject[] m_PrevRaycast;
     public List<GameObject> m_RaycastHitsList = new List<GameObject>();
@@ -301,15 +300,15 @@ public class MCamera : MonoBehaviour
     }
     void TargetOneAdd()
     {
-        if(m_OneFlg)
-        {
-            m_TargetList.Clear();
-            foreach (Transform chlid in m_TargetObj.transform)
-            {
-                m_TargetList.Add(chlid.gameObject);
-            }
-            m_OneFlg = false;
-        }
+        //if(m_OneFlg)
+        //{
+        //    m_TargetList.Clear();
+        //    foreach (Transform chlid in m_TargetObj.transform)
+        //    {
+        //        m_TargetList.Add(chlid.gameObject);
+        //    }
+        //    m_OneFlg = false;
+        //}
     }
 
     public void GetCursorCamera(GameObject gameObject)
