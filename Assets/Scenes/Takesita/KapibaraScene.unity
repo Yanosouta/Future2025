@@ -449,6 +449,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2186217001014013416, guid: 915ac35a5aca31d4c9575633be0f6b82, type: 3}
   m_PrefabInstance: {fileID: 410112036}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &39061069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 39061070}
+  m_Layer: 0
+  m_Name: NaviObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &39061070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39061069}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1306801594}
+  - {fileID: 1441554853}
+  m_Father: {fileID: 123409881}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &57573482 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7492970227893232665, guid: 11ef6c955fb624a4aaf3b18597db22df, type: 3}
@@ -984,8 +1017,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1306801594}
-  - {fileID: 1441554853}
+  - {fileID: 39061070}
   - {fileID: 2083873300}
   - {fileID: 1703367668}
   - {fileID: 90422895}
@@ -10862,7 +10894,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1306801594
 Transform:
@@ -10877,7 +10909,7 @@ Transform:
   m_LocalScale: {x: 8.940258, y: 0.38326812, z: 11.637241}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 123409881}
+  m_Father: {fileID: 39061070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1306801595
 BoxCollider:
@@ -12021,7 +12053,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1441554853
 Transform:
@@ -12036,7 +12068,7 @@ Transform:
   m_LocalScale: {x: 8.409057, y: 0.38326812, z: 11.637241}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 123409881}
+  m_Father: {fileID: 39061070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1441554854
 BoxCollider:
@@ -16025,6 +16057,7 @@ GameObject:
   - component: {fileID: 1937125791}
   - component: {fileID: 1937125790}
   - component: {fileID: 1937125789}
+  - component: {fileID: 1937125792}
   m_Layer: 0
   m_Name: Camera1
   m_TagString: MainCamera
@@ -16100,12 +16133,26 @@ Transform:
   m_GameObject: {fileID: 1937125788}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -135.4, y: 15.9, z: 0.8}
+  m_LocalPosition: {x: -20.5, y: 3.4, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 324835031}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1937125792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937125788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3c8153739b8ba459a4ccb95ebd8de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FeedPrefab: {fileID: 3399866769435499802, guid: f0ba2e60fa439d543afd2f675b5ec3af, type: 3}
+  spawnPoint: {fileID: 1937125791}
 --- !u!1001 &1939082801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17887,9 +17934,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiPrefabs:
-  - {fileID: 3882779386812163997, guid: b21069fced8c5b74e8fe60695b79182a, type: 3}
-  - {fileID: 3882779386812163997, guid: b21069fced8c5b74e8fe60695b79182a, type: 3}
-  - {fileID: 3882779386812163997, guid: b21069fced8c5b74e8fe60695b79182a, type: 3}
+  - {fileID: 8528008212579847660, guid: 813fe304097d99c42a6dc7e2caad117a, type: 3}
+  - {fileID: 8528008212579847660, guid: 813fe304097d99c42a6dc7e2caad117a, type: 3}
+  - {fileID: 8528008212579847660, guid: 813fe304097d99c42a6dc7e2caad117a, type: 3}
   spawnInterval: 2
   maxObjects: 10
   nextSpawnTime: 0

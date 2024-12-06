@@ -60,6 +60,7 @@ public class MCamera : MonoBehaviour
     //スティックの情報を格納
     Vector2 m_Stick;
 
+    //メニューフラグ
     // 前フレームで遮蔽物として扱われていたゲームオブジェクトを格納。
     public GameObject[] m_PrevRaycast;
     public List<GameObject> m_RaycastHitsList = new List<GameObject>();
@@ -115,17 +116,17 @@ public class MCamera : MonoBehaviour
                 {
                     m_Count++;
                     //カメラの数を超えたら０に補正
-                    if (m_Count >= m_CameraList.Count)
+                    if (m_Count >= m_TargetList.Count)
                         m_Count = 0;
-                    //CameraReSet();
+                    //TargetOneAdd();
                 }
                 if (m_State.GetButtonL())
                 {
                     m_Count--;
                     //-1になったらカメラの数に補正
                     if (m_Count <= -1)
-                        m_Count = m_CameraList.Count - 1;
-                    //CameraReSet();
+                        m_Count = m_TargetList.Count - 1;
+                    //TargetOneAdd();
                 }
             }
             //次のターゲットを入れる
@@ -181,22 +182,22 @@ public class MCamera : MonoBehaviour
         //ターゲット切り替え時にスムーズに移動する
         if(m_CurrentTarget != m_NextTarget)
         {
-            m_TargetList.Clear();
-            foreach (Transform chlid in m_TargetObj.transform)
-            {
-                m_TargetList.Add(chlid.gameObject);
-            }
+            //m_TargetList.Clear();
+            //foreach (Transform chlid in m_TargetObj.transform)
+            //{
+            //    m_TargetList.Add(chlid.gameObject);
+            //}
 
             //カメラの位置をターゲットに移動
             if (m_LeapFlg)
             {
-                m_TargetPos = m_NextTarget.transform.position
+                m_TargetPos = m_NextTarget.transform.localPosition
                 - (Quaternion.Euler(m_Rotiton.x, m_Rotiton.y, 0.0f)
                 * Vector3.forward
                 /** m_Distance*/);
                 m_LeapFlg = false;
             }
-
+            
             //Vector3 direction = (m_TargetPos - m_CameraList[0].transform.position).normalized;
             //m_CameraList[0].transform.position += direction * m_Speed * Time.deltaTime;
 
@@ -297,13 +298,17 @@ public class MCamera : MonoBehaviour
             }
         }
     }
-    void CameraReSet()
+    void TargetOneAdd()
     {
-        //カメラの回転情報を初期化
-        for (int i = 0; i < m_CameraList.Count; i++)
-        {
-            m_CameraList[i].gameObject.transform.rotation = m_CameraStorageList[i].gameObject.transform.rotation;
-        }
+        //if(m_OneFlg)
+        //{
+        //    m_TargetList.Clear();
+        //    foreach (Transform chlid in m_TargetObj.transform)
+        //    {
+        //        m_TargetList.Add(chlid.gameObject);
+        //    }
+        //    m_OneFlg = false;
+        //}
     }
 
     public void GetCursorCamera(GameObject gameObject)
