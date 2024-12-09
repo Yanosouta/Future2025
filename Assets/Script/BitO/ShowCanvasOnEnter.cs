@@ -9,8 +9,6 @@ public class ShowCanvasOnEnter : MonoBehaviour
     // コントローラーもの
     ControllerState m_State;
 
-    private bool isPaused = false;
-
     private void Start()
     {
         // コントローラー
@@ -28,21 +26,21 @@ public class ShowCanvasOnEnter : MonoBehaviour
 
     private void TogglePause()
     {
-        if (!isPaused)
+        if (canvas != null)
         {
-            isPaused = true;
+            // 現在のアクティブ状態を反転させる
+            bool isActive = canvas.activeSelf;
+            canvas.SetActive(!isActive);
 
-            // ポーズ状態にする
-            canvas.SetActive(true); // ポーズ画面を表示
-            Time.timeScale = 0.0f; // ゲーム時間を停止
-        }
-        else
-        {
-           isPaused = false;
-
-            // ポーズ解除
-            canvas.SetActive(false); // ポーズ画面を非表示
-            Time.timeScale = 1.0f; // ゲーム時間を再開
+            // ゲーム内の時間を停止または再開
+            if (isActive) // 表示状態だったら
+            {
+                Time.timeScale = 1.0f; // 時間を再開
+            }
+            else // 非表示だったら
+            {
+                Time.timeScale = 0.0f; // 時間を停止
+            }
         }
     }
 
