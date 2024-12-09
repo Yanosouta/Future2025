@@ -19161,6 +19161,7 @@ MonoBehaviour:
   m_ONButton: {fileID: 1582315775}
   currentPanel: {fileID: 645048865}
   targetPanel: {fileID: 508438449}
+  canvas: {fileID: 737254033}
 --- !u!114 &737254039
 MonoBehaviour:
   m_ObjectHideFlags: 0

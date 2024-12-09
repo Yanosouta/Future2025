@@ -34,7 +34,9 @@ public class GameButtonNavigation : MonoBehaviour
 
     // コントローラーもの
     ControllerState m_State;
-    private GameObject canvas;
+
+    [SerializeField, Label("ポーズ画面指定")]
+    public GameObject canvas;
    
     private void Start()
     {
