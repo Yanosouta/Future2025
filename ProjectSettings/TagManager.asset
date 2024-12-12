@@ -6,6 +6,7 @@ TagManager:
   tags:
   - KAPIBARA
   - stage
+  - Manager
   layers:
   - Default
   - TransparentFX
