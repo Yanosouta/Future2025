@@ -1,21 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ThrowFeed : MonoBehaviour
 {
     public GameObject FeedPrefab; // 投げるエサのプレハブを設定
-    public Transform spawnPoint; // エサの生成位置を設定（例えば、カメラの前方など）
+    public Transform spawnPoint; // エサの生成位置を設定
 
-    // Start is called before the first frame update
+    private FeedGauge feedGauge;
+
     void Start()
     {
-        // 必要に応じて初期化処理
+        // FeedGauge コンポーネントを取得
+        feedGauge = FindObjectOfType<FeedGauge>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // キー入力でエサを投げる
         if (Input.GetKeyDown(KeyCode.P))
         {
             ThrowFeedPrefab();
@@ -25,21 +25,29 @@ public class ThrowFeed : MonoBehaviour
     // エサを投げる処理
     void ThrowFeedPrefab()
     {
-        if (FeedPrefab != null && spawnPoint != null)
+        // エサが投げられる状態か確認
+        if (FeedGauge.fFeedFlg)
         {
-            // プレハブを生成
-            GameObject feedInstance = Instantiate(FeedPrefab, spawnPoint.position, spawnPoint.rotation);
-
-            // 必要に応じて生成後の処理（例: Rigidbodyで力を加える）
-            Rigidbody rb = feedInstance.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (FeedPrefab != null && spawnPoint != null)
             {
-                rb.AddForce(spawnPoint.forward * 500f); // 前方に力を加える
+                // プレハブを生成
+                GameObject feedInstance = Instantiate(FeedPrefab, spawnPoint.position, spawnPoint.rotation);
+
+                // Rigidbody に力を加えて前方に飛ばす
+                Rigidbody rb = feedInstance.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.AddForce(spawnPoint.forward * 500f); // 前方に力を加える
+                }
+
+                // フラグをリセットし、ゲージを0に戻す
+                FeedGauge.fFeedFlg = false;
+                feedGauge.Gauge.fillAmount = 0;
             }
-        }
-        else
-        {
-            Debug.LogWarning("FeedPrefab または spawnPoint が設定されていません。");
+            else
+            {
+                Debug.LogWarning("FeedPrefab または spawnPoint が設定されていません。");
+            }
         }
     }
 }
