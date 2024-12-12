@@ -6,7 +6,7 @@ TagManager:
   tags:
   - KAPIBARA
   - stage
-  - Feed
+  - Manager
   layers:
   - Default
   - TransparentFX
@@ -15,7 +15,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - Feed
+  - 
   - 
   - 
   - 
