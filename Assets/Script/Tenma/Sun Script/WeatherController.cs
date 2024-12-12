@@ -23,6 +23,9 @@ public class WeatherController : DayWeatherManager
     [SerializeField]
     private Text text;
 
+    [Header("RainEffect(Obj)")]
+    public GameObject rainObj;
+
     [Header("天気ごとの確率")]
     public List<WeatherWeight> weatherWeights = new List<WeatherWeight>
     {
@@ -32,6 +35,7 @@ public class WeatherController : DayWeatherManager
     };
 
     private TimeOfDay beforeTimeOfDay;
+    private MeshRenderer mesh;
 
     public static new WeatherController instance;
 
@@ -65,6 +69,7 @@ public class WeatherController : DayWeatherManager
     void Start()
     {
         beforeTimeOfDay = currentTimeOfDay;
+        mesh = rainObj.GetComponent<MeshRenderer>();
     }
 
 
@@ -72,14 +77,24 @@ public class WeatherController : DayWeatherManager
     {
         //Debug.Log("Current time of day: " + currentTimeOfDay);
         //Debug.Log("Before time of day: " + beforeTimeOfDay);
+        if (currentWeather == Weather.Rainy) mesh.enabled = true;
+        else mesh.enabled = false;
+
+        //夕方から夜に変わるタイミングのみ
+        if(beforeTimeOfDay == TimeOfDay.Evening && currentTimeOfDay == TimeOfDay.Night)
+        {
+            SetRandomWeather();
+            Debug.Log(futureWeather);
+        }
+
 
         //夜から朝に変わるタイミングのみ
         if (beforeTimeOfDay == TimeOfDay.Night && currentTimeOfDay == TimeOfDay.Morning)
         {
             //Debug.Log("天気予報");
-            SetRandomWeather();
-            //Debug.Log(currentWeather);
+            currentWeather = futureWeather;
         }
+        //Debug.Log(currentWeather);
 
         beforeTimeOfDay = currentTimeOfDay;
     }
@@ -100,7 +115,7 @@ public class WeatherController : DayWeatherManager
             cumulativeWeight += weatherWeight.weight;
             if (randomValue < cumulativeWeight)
             {
-                currentWeather = weatherWeight.weather;
+                futureWeather = weatherWeight.weather;
                 break;
             }
         }
