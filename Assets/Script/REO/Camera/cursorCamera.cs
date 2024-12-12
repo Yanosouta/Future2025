@@ -64,13 +64,13 @@ public class cursorCamera : MonoBehaviour
             // キーボードのWASD入力
             if (Keyboard.current != null)
             {
-                if (Keyboard.current.wKey.isPressed)
+                if (Keyboard.current.yKey.isPressed)
                     leftStickInput.y += 1;
-                if (Keyboard.current.sKey.isPressed)
+                if (Keyboard.current.hKey.isPressed)
                     leftStickInput.y -= 1;
-                if (Keyboard.current.aKey.isPressed)
+                if (Keyboard.current.gKey.isPressed)
                     leftStickInput.x -= 1;
-                if (Keyboard.current.dKey.isPressed)
+                if (Keyboard.current.jKey.isPressed)
                     leftStickInput.x += 1;
             }
 
@@ -80,7 +80,7 @@ public class cursorCamera : MonoBehaviour
             SelectObjectUnderCursor();
 
             // AボタンまたはEnterキーが押された場合、カメラを選択されたオブジェクトの前に移動
-            if (isCursorEnabled && Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.enterKey.wasPressedThisFrame) //selectedObject != null && () 
+            if (selectedObject != null && (isCursorEnabled && Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.enterKey.wasPressedThisFrame))  
             {
                 MoveCameraToSelectedObject();
                 DisableCursorControl(); // カーソル操作を無効にする
@@ -107,23 +107,32 @@ public class cursorCamera : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
         ray.origin += Vector3.up * 0.8f; // レイの発射位置を上に調整
 
+        Vector3 boxHalfExtents = new Vector3(1.0f, 1.0f, 1.0f); // BoxCastの半径
         RaycastHit hit;
 
-        // レイを画面上に描画（長さ1, 色は青）
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.blue);
+        // デバッグ描画
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.BoxCast(ray.origin, boxHalfExtents, ray.direction, out hit, Quaternion.identity, 10000f))
         {
-            // 「KAPIBARA」タグが付いているオブジェクトのみ選択
-            if (hit.collider.gameObject.CompareTag("KAPIBARA"))
+            // ヒットしたコライダーがカプセルコライダーかどうか確認
+            if (hit.collider is CapsuleCollider)
             {
-                selectedObject = hit.collider.gameObject;
-                Debug.Log("KAPIBARAタグのオブジェクトを選択しました: " + selectedObject.name);
+                if (hit.collider.gameObject.CompareTag("KAPIBARA"))
+                {
+                    selectedObject = hit.collider.gameObject;
+                    Debug.Log("KAPIBARAタグのカプセルコライダーを選択しました: " + selectedObject.name);
+                }
+                else
+                {
+                    selectedObject = null;
+                    Debug.Log("カプセルコライダーだがKAPIBARAタグがありません: " + hit.collider.gameObject.name);
+                }
             }
             else
             {
                 selectedObject = null;
-                Debug.Log("KAPIBARAタグがありません: " + hit.collider.gameObject.name);
+                Debug.Log("カプセルコライダーではありません: " + hit.collider.gameObject.name);
             }
         }
         else
@@ -145,7 +154,7 @@ public class cursorCamera : MonoBehaviour
 
 
 
-            //StartCoroutine(MoveCameraCoroutine());
+            StartCoroutine(MoveCameraCoroutine());
         }
     }
 
@@ -167,6 +176,8 @@ public class cursorCamera : MonoBehaviour
         }
 
         mainCamera.transform.position = targetPosition; // 最終位置を確実に設定
+
+        selectedObject = null;
     }
 
     void DisableCursorControl()

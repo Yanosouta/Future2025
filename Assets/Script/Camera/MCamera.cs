@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class MCamera : MonoBehaviour
 {
@@ -60,8 +59,9 @@ public class MCamera : MonoBehaviour
     //スティックの情報を格納
     Vector2 m_Stick;
 
-    //一回目だけ処理をするフラグ
-    private bool m_OneFlg = true;
+    //一度だけ実行フラグ
+    private bool m_OneFlg;
+    //メニューフラグ
     // 前フレームで遮蔽物として扱われていたゲームオブジェクトを格納。
     public GameObject[] m_PrevRaycast;
     public List<GameObject> m_RaycastHitsList = new List<GameObject>();
@@ -85,11 +85,12 @@ public class MCamera : MonoBehaviour
         }
 
         m_MainCamera  = m_CameraList[0].transform.GetChild(0);
-
+        m_Rotiton = new Vector2(-34.0f,60.0f);
         m_ChildCount = m_TargetObj.transform.childCount;
         m_CurrentTarget = m_TargetList[0].transform;
         m_NextTarget = m_TargetList[0].transform;
         m_NoRotitonFlg = true;
+        m_OneFlg = true;
     }
     void Update()
     {
@@ -139,7 +140,7 @@ public class MCamera : MonoBehaviour
         if (m_button == ControllerBase.ControllerButton.DoNot)
             m_CameraFlg = true;
 
-       
+        
 
         //ターゲットまでカメラを移動
         TargetSwitch();
@@ -221,9 +222,6 @@ public class MCamera : MonoBehaviour
         //移動中なら操作を受け付けない
         if (!m_LeapFlg)
             return;
-
-        if (m_Stick.magnitude > 0.1f)
-            Debug.Log("動いてる");
         if(m_NoRotitonFlg)
         {
             m_Rotiton.x += m_Stick.y * m_Speed * Time.deltaTime;
@@ -254,7 +252,7 @@ public class MCamera : MonoBehaviour
         //RaycastHit[] raycastHits = Physics.RaycastAll(ray);
         
         // BoxCast の幅、高さ、奥行きを設定
-        Vector3 boxHalfExtents = new Vector3(0.5f, 0.5f, 0.5f); // 半径を設定
+        Vector3 boxHalfExtents = new Vector3(0.1f, 0.1f, 0.1f); // 半径を設定
         // BoxCast を実行
         RaycastHit[] boxCastHits = Physics.BoxCastAll(
         m_MainCamera.transform.position,  // BoxCast の開始位置
@@ -262,7 +260,7 @@ public class MCamera : MonoBehaviour
         direction,                        // Box の進行方向
         Quaternion.identity,              // Box の回転 (今回はデフォルト)
         difference.magnitude              // BoxCast の距離
-    );
+        );
 
         Debug.DrawRay(m_MainCamera.transform.position, difference, Color.white, 1.0f, false);
 
@@ -299,16 +297,11 @@ public class MCamera : MonoBehaviour
             }
         }
     }
-    void TargetOneAdd()
+    void InitRotation()
     {
         if(m_OneFlg)
         {
-            m_TargetList.Clear();
-            foreach (Transform chlid in m_TargetObj.transform)
-            {
-                m_TargetList.Add(chlid.gameObject);
-            }
-            m_OneFlg = false;
+            m_MainCamera.transform.rotation = new Quaternion(0.0f, -41.925f,0.0f,0.0f);
         }
     }
 

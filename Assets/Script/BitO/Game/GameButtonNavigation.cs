@@ -35,6 +35,9 @@ public class GameButtonNavigation : MonoBehaviour
     // コントローラーもの
     ControllerState m_State;
 
+    [SerializeField, Label("ポーズ画面指定")]
+    public GameObject canvas;
+   
     private void Start()
     {
         // コントローラー
@@ -75,7 +78,8 @@ public class GameButtonNavigation : MonoBehaviour
     public void MenuClose()
     {
         // MainPanelを非表示
-        MainPanel.SetActive(false);
+        Time.timeScale = 1.0f; // ゲーム時間を再開
+        canvas.SetActive(false);
     }
 
     // 図鑑表示
