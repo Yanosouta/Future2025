@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 20967676}
   m_Layer: 0
   m_Name: Directional Light
-  m_TagString: Untagged
+  m_TagString: DirectionalLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fb8ff724f973f440acf361c6efbc356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotate: 30
+  rot: 0.01
   TimeIntensity:
   - 1
   - 1
