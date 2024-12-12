@@ -13,6 +13,7 @@ public class DayWeatherManager : MonoBehaviour
         Night      //18~6
     }
     //15度/h
+    //0.004度/s
 
     public enum Weather
     {
@@ -23,12 +24,11 @@ public class DayWeatherManager : MonoBehaviour
 
     protected static TimeOfDay currentTimeOfDay;
     protected static Weather currentWeather;
-
-    protected float rot = 1.0f;
+    protected static Weather futureWeather;
 
     protected Text weatherTimeText; // 天気と時間を表示するUIテキスト
 
-    public static DayWeatherManager instance;
+    public static DayWeatherManager instance { get; private set; }
 
     private void Awake()
     {
@@ -83,6 +83,13 @@ public class DayWeatherManager : MonoBehaviour
         return currentWeather;
     }
 
+
+    public Weather GetFutureWeather()
+    {
+        return futureWeather;
+    }
+
+
     // 現在の時間帯を取得するメソッド
     // ---------------使用例--------------------
     // DayWeatherManager.TimeOfDay currentTime = weatherManager.GetCurrentTimeOfDay();
@@ -104,32 +111,5 @@ public class DayWeatherManager : MonoBehaviour
             weatherTimeText.text = "Time of Day: " + currentTimeOfDay + "\nWeather: " + currentWeather;
         }
         // 環境に応じた更新処理（例：ライトやエフェクトの変更など）をここに追加
-
-    }
-
-
-
-    /// <summary>
-    /// 太陽の回転を停止する(時間経過止まる)
-    /// </summary>
-    public void StopDirectionLightRotate()
-    {
-        rot = 0.0f;
-    }
-
-    /// <summary>
-    /// 太陽の回転を再開する(時間経過を元に戻す)
-    /// </summary>
-    public void ReStartDirectionLIghtRotate()
-    {
-        rot = 1.0f;
-    }
-
-    /// <summary>
-    /// 太陽の回転を倍速にする(f倍速)
-    /// </summary>
-    public void SetDirectionLightRotate(float f)
-    {
-        rot = f;
     }
 }

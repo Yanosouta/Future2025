@@ -143,9 +143,11 @@ GameObject:
   m_Component:
   - component: {fileID: 20967675}
   - component: {fileID: 20967674}
+  - component: {fileID: 20967677}
+  - component: {fileID: 20967676}
   m_Layer: 0
   m_Name: Directional Light
-  m_TagString: Untagged
+  m_TagString: DirectionalLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -227,6 +229,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &20967676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20967673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 905d0ee9445a3c84daa9661f8827dbaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  rainObj: {fileID: 2080041473}
+  weatherWeights:
+  - weather: 0
+    weight: 20
+  - weather: 1
+    weight: 30
+  - weather: 2
+    weight: 50
+--- !u!114 &20967677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20967673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fb8ff724f973f440acf361c6efbc356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rot: 0.01
+  TimeIntensity:
+  - 1
+  - 1
+  - 1
+  - 1
+  DecayRateIntencity:
+  - 0.8
+  - 0.5
 --- !u!1001 &44784913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -917,7 +961,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.9914449, z: -0.13052616, w: 0}
   m_LocalPosition: {x: -21.4, y: -2.6, z: 18.4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2080041474}
@@ -7939,6 +7983,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1967593609}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1974968942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1974968944}
+  - component: {fileID: 1974968943}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Manager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1974968943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974968942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b3faad1855c46f48a93735f02a0e6c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1974968944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974968942}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2006535414 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7492970227893232665, guid: 11ef6c955fb624a4aaf3b18597db22df, type: 3}
@@ -8048,7 +8136,7 @@ Transform:
   m_GameObject: {fileID: 2080041473}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6087615, z: 0.7933534, w: 0}
-  m_LocalPosition: {x: 0.005727768, y: -0.4209535, z: 13.1883335}
+  m_LocalPosition: {x: -0.1, y: -0.1, z: 6.3}
   m_LocalScale: {x: 2.3999996, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8079,9 +8167,10 @@ MonoBehaviour:
     colorBlendType: 3
     normalBlendType: 0
     heightBlendType: 5
-  minSize: 0.003
-  maxSize: 0.008
-  aboutCallPercentOnFrame: 4
+  minSize: 0.001
+  maxSize: 0.003
+  aboutCallPercentOnFrame: 11.5
+  radius: 0.2
   resetInterval: 2
   hiddenLayerName: Rain
 --- !u!114 &2080041476
@@ -8472,3 +8561,4 @@ SceneRoots:
   - {fileID: 1664768887}
   - {fileID: 515587480}
   - {fileID: 1295012177}
+  - {fileID: 1974968944}

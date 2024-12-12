@@ -131,10 +131,10 @@ Shader "Custom/WaterFragmentShader"
             {
                 v2f o;
                 // ”g‚Ì‚‚³‚ğŒvZ‚µ‚Ä’¸“_‚ğ•ÏˆÊ
-                float waveHeight = fBm(v.uv * _Scale + _TimeScale.xy * _Time.y);
+                //float waveHeight = fBm(v.uv * _Scale + _TimeScale.xy * _Time.y);
                 float wave = WAVE_HEIGHT(_WaveTex, v.uv) * _VertexDisplacementScale;
                 float3 displacedPos = v.vertex.xyz;
-                displacedPos.y += (waveHeight + wave);
+                displacedPos.y += (wave);
 
                 //À•W•ÏŠ·
                 o.pos = UnityObjectToClipPos(float4(displacedPos, 1.0));
@@ -221,9 +221,9 @@ Shader "Custom/WaterFragmentShader"
             {
                 v2f o;
                 // ”g‚Ì‚‚³‚ğŒvZ‚µ‚Ä’¸“_‚ğ•ÏˆÊ
-                float waveHeight = fBm(v.uv * _Scale + _TimeScale.xy * _Time.y);
+                //float waveHeight = fBm(v.uv * _Scale + _TimeScale.xy * _Time.y);
                 float3 displacedPos = v.vertex.xyz;
-                displacedPos.y += waveHeight;
+                //displacedPos.y += waveHeight;
                 o.pos = UnityObjectToClipPos(float4(displacedPos, 1.0));
                 o.screenPos = ComputeScreenPos(o.pos);
 

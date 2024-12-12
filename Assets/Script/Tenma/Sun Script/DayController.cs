@@ -11,7 +11,7 @@ public class DayController : DayWeatherManager
 {
     [Header("‰ñ“]‘¬“x")]
     [SerializeField]
-    private float rotate = 0.5f;
+    private float rot = 0.01f;
 
     [Header("‘¾—z‚ÌŒõ‚Ì‹­‚³")]
     [SerializeField]
@@ -25,6 +25,7 @@ public class DayController : DayWeatherManager
     private Light DirectionLight;
     private float totalIntencity = 1.0f;
     private float currentAngle;
+    private float rotate = 1f;
 
     private void Awake()
     {
@@ -99,6 +100,18 @@ public class DayController : DayWeatherManager
         //Debug.Log(currentAngle);
         //Debug.Log(currentWeather);
         //Debug.Log(DirectionLight.intensity);
+
+        //30•ª‚Åˆêü
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.O))
+        {
+            SetDirectionLightRotate(0.2f);
+        }
+
+        //30•b‚Åˆêü
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
+        {
+            SetDirectionLightRotate(12f);
+        }
     }
 
 
@@ -146,5 +159,29 @@ public class DayController : DayWeatherManager
                 totalIntencity /= DecayRateIntencity[1];
                 break;
         }
+    }
+
+    /// <summary>
+    /// ‘¾—z‚Ì‰ñ“]‚ğ’â~‚·‚é(ŠÔŒo‰ß~‚Ü‚é)
+    /// </summary>
+    public void StopDirectionLightRotate()
+    {
+        rot = 0.0f;
+    }
+
+    /// <summary>
+    /// ‘¾—z‚Ì‰ñ“]‚ğÄŠJ‚·‚é(ŠÔŒo‰ß‚ğŒ³‚É–ß‚·)
+    /// </summary>
+    public void ReStartDirectionLIghtRotate()
+    {
+        rot = 1.0f;
+    }
+
+    /// <summary>
+    /// ‘¾—z‚Ì‰ñ“]‚ğ”{‘¬‚É‚·‚é(f”{‘¬)
+    /// </summary>
+    public void SetDirectionLightRotate(float f)
+    {
+        rot = f;
     }
 }
