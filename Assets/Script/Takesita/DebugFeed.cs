@@ -7,6 +7,7 @@ public class DebugFeed : MonoBehaviour
     public GameObject FeedPrefab; // 投げるエサのプレハブを設定
     public Transform spawnPoint; // エサの生成位置を設定
     public GameObject DebugMode;
+    public GameObject Target;
     static public bool DebugFlg = false;
     void Start()
     {
@@ -21,11 +22,13 @@ public class DebugFeed : MonoBehaviour
             {
                 DebugFlg = false;
                 DebugMode.SetActive(false);
+                Target.SetActive(false);
             }
             else
             {
                 DebugFlg = true;
                 DebugMode.SetActive(true);
+                Target.SetActive(true);
             }
         }
         // キー入力でエサを投げる
