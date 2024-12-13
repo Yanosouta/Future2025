@@ -9683,7 +9683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cca35da0bbef7c6439928553877b071f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FeedPrefab: {fileID: 3399866769435499802, guid: f0ba2e60fa439d543afd2f675b5ec3af, type: 3}
+  FeedPrefab: {fileID: 7808334792382160945, guid: 63ec4586218dc0247a69cc41824dfff6, type: 3}
   spawnPoint: {fileID: 1937125791}
   DebugMode: {fileID: 680880226}
 --- !u!4 &1155828752
@@ -16604,7 +16604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3c8153739b8ba459a4ccb95ebd8de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FeedPrefab: {fileID: 3399866769435499802, guid: f0ba2e60fa439d543afd2f675b5ec3af, type: 3}
+  FeedPrefab: {fileID: 7808334792382160945, guid: 63ec4586218dc0247a69cc41824dfff6, type: 3}
   spawnPoint: {fileID: 1937125791}
 --- !u!1001 &1939082801
 PrefabInstance:
