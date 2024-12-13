@@ -6,21 +6,41 @@ public class ShowCanvasOnEnter : MonoBehaviour
 {
     public GameObject canvas; // 非表示にしているCanvas
 
+    public GameObject m_camera;
     // コントローラーもの
     ControllerState m_State;
+    ControllerBase m_Controller;
+    ControllerBase.ControllerButton m_Button;
 
+    bool isActive = false;
+    bool OnOFFFlg = false;
     private void Start()
     {
+        m_State = m_camera.GetComponent<ControllerState>();
+        m_Controller = m_camera.GetComponent<ControllerBase>();
         // コントローラー
-        m_State = GetComponent<ControllerState>();
+        //m_State = GetComponent<ControllerState>();
     }
 
     void Update()
     {
+        m_Button = m_Controller.GetButton();
         // Enterキーが押された場合またはコントローラーのボタンが押された場合
-        if (m_State.GetButtonMenu() || Input.GetKeyDown(KeyCode.A))
+        if (m_State.GetButtonMenu())
         {
-            TogglePause();
+            OnOFFFlg = true;
+        }
+        ONToOFF();
+    }
+    private void ONToOFF()
+    {
+        if(OnOFFFlg)
+        {
+            if (m_State.GetButtonDoNot())
+            {
+                TogglePause();
+                OnOFFFlg = false;
+            }
         }
     }
 
@@ -28,10 +48,10 @@ public class ShowCanvasOnEnter : MonoBehaviour
     {
         if (canvas != null)
         {
+            
             // 現在のアクティブ状態を反転させる
-            bool isActive = canvas.activeSelf;
+            isActive = canvas.activeSelf;
             canvas.SetActive(!isActive);
-
             // ゲーム内の時間を停止または再開
             if (isActive) // 表示状態だったら
             {
@@ -41,6 +61,8 @@ public class ShowCanvasOnEnter : MonoBehaviour
             {
                 Time.timeScale = 0.0f; // 時間を停止
             }
+            
+            
         }
     }
 

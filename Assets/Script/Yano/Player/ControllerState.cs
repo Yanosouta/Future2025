@@ -78,12 +78,13 @@ public class ControllerState : MonoBehaviour
             case ControllerBase.ControllerButton.Stick:
                 TrueStick();
                 break;
-            case ControllerBase.ControllerButton.DoNot:
-                TrueDoNot();
-                break;
             case ControllerBase.ControllerButton.Button_Menu:
                 TrueMenu();
                 break;
+            case ControllerBase.ControllerButton.DoNot:
+                TrueDoNot();
+                break;
+           
         }
         
     }

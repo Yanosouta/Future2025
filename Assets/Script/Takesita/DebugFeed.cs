@@ -16,7 +16,7 @@ public class DebugFeed : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.I))
         {
             if(DebugFlg)
             {
@@ -34,7 +34,7 @@ public class DebugFeed : MonoBehaviour
         // キー入力でエサを投げる
         if(DebugFlg)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.O))
             {
                 Throw();
             }
