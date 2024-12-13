@@ -252,7 +252,7 @@ public class MCamera : MonoBehaviour
         //RaycastHit[] raycastHits = Physics.RaycastAll(ray);
         
         // BoxCast の幅、高さ、奥行きを設定
-        Vector3 boxHalfExtents = new Vector3(0.1f, 0.1f, 0.1f); // 半径を設定
+        Vector3 boxHalfExtents = new Vector3(0.5f, 0.5f, 0.5f); // 半径を設定
         // BoxCast を実行
         RaycastHit[] boxCastHits = Physics.BoxCastAll(
         m_MainCamera.transform.position,  // BoxCast の開始位置
