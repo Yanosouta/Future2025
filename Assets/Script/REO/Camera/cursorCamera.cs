@@ -24,11 +24,11 @@ public class cursorCamera : MonoBehaviour
         cursor.SetActive(false); // ゲーム開始時はカーソルを非表示に
         cursorPosition = new Vector2(Screen.width / 2, Screen.height / 2); // カーソルの初期位置を画面中央に設定
                                                                            // cursorが設定されているか確認
-        m_State = GetComponent<ControllerState>();
         m_Stick = GetComponent<ControllerBase>();
 
         ParentObj = mainCamera.transform.root.gameObject;
         m_Camera = ParentObj.GetComponent<MCamera>();
+        m_State = ParentObj.GetComponent<ControllerState>();
     }
 
     void Update()
@@ -64,13 +64,13 @@ public class cursorCamera : MonoBehaviour
             // キーボードのWASD入力
             if (Keyboard.current != null)
             {
-                if (Keyboard.current.yKey.isPressed)
+                if (m_State.GetButtonUp())
                     leftStickInput.y += 1;
-                if (Keyboard.current.hKey.isPressed)
+                if (m_State.GetButtonDown())
                     leftStickInput.y -= 1;
-                if (Keyboard.current.gKey.isPressed)
+                if (m_State.GetButtonLeft())
                     leftStickInput.x -= 1;
-                if (Keyboard.current.jKey.isPressed)
+                if (m_State.GetButtonRight())
                     leftStickInput.x += 1;
             }
 
