@@ -46,6 +46,7 @@ public class GameButtonNavigation : MonoBehaviour
         // 最初のボタンにフォーカスを当てる
         currentButton = m_StartButton;
         m_StartButton.Select();
+        m_StartButton.onClick.AddListener(MenuClose);
         m_BookButton.onClick.AddListener(OnBookButtonClick);
         m_EndButton.onClick.AddListener(OnEnd_ONButtonClick);
         //m_ONButton.onClick.AddListener(OnEnd_ONButtonClick);
