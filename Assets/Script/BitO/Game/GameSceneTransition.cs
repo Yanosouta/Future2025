@@ -19,6 +19,7 @@ public class GameSceneTransition : MonoBehaviour
 
     public void HideMenuAndStartFade()
     {
+        Time.timeScale = 1.0f; // ƒQ[ƒ€ŠÔ‚ğÄŠJ
         menuCanvas.SetActive(false);
 
         StartCoroutine(m_fade.FadeOutAndChangeScene(SceneName));
