@@ -28,6 +28,9 @@ public class DayWeatherManager : MonoBehaviour
 
     protected Text weatherTimeText; // 天気と時間を表示するUIテキスト
 
+    public GameObject RainEffect; // 雨のエフェクト用のGameObject
+    public ParticleSystem RainParticle; // 雨のパーティクルシステム
+
     public static DayWeatherManager instance;
 
     private void Awake()
@@ -60,6 +63,28 @@ public class DayWeatherManager : MonoBehaviour
         currentWeather = Weather.Sunny;
 
         UpdateEnvironment();
+    }
+
+    private void Update()
+    {
+        // デバッグ用: 各キーを押したら天気変更
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.Log("天気をSunnyに設定");
+            SetWeather(Weather.Sunny);
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Debug.Log("天気をCloudyに設定");
+            SetWeather(Weather.Cloudy);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("天気をRainyに設定");
+            SetWeather(Weather.Rainy);
+        }
     }
 
     // 他のスクリプトから天気をセットするメソッド
@@ -105,9 +130,25 @@ public class DayWeatherManager : MonoBehaviour
         }
         // 環境に応じた更新処理（例：ライトやエフェクトの変更など）をここに追加
 
+        // 雨のパーティクルの再生・停止
+        if (RainParticle != null)
+        {
+            if (currentWeather == Weather.Rainy)
+            {
+                if (!RainParticle.isPlaying)
+                {
+                    RainParticle.Play(); // 雨パーティクルを再生
+                }
+            }
+            else
+            {
+                if (RainParticle.isPlaying)
+                {
+                    RainParticle.Stop(); // 雨パーティクルを停止
+                }
+            }
+        }
     }
-
-
 
     /// <summary>
     /// 太陽の回転を停止する(時間経過止まる)
