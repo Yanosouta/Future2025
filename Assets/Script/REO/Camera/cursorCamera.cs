@@ -88,57 +88,50 @@ public class cursorCamera : MonoBehaviour
         }
     }
 
+    void SelectObjectUnderCursor()
+    {
+        // カーソル位置からレイを飛ばしてオブジェクトを選択
+        Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
+
+        // レイの発射位置を再調整（必要に応じてオフセットを変更）
+        Vector3 rayOriginOffset = Vector3.up * 0.8f; // 必要ならVector3.up * 0.8fを使う
+        ray.origin += rayOriginOffset;
+
+        Vector3 boxHalfExtents = new Vector3(1.0f, 1.0f, 1.0f); // BoxCastのサイズ
+        RaycastHit hit;
+
+        // デバッグ描画（青色でレイを表示）
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.blue);
+
+        if (Physics.BoxCast(ray.origin, boxHalfExtents, ray.direction, out hit, Quaternion.identity, 100f))
+        {
+            // ヒットしたオブジェクトの処理
+            if (hit.collider != null)
+            {
+                selectedObject = hit.collider.gameObject;
+                Debug.Log("選択したオブジェクト: " + selectedObject.name);
+            }
+        }
+        else
+        {
+            selectedObject = null; // 何も選択されていない場合
+        }
+    }
+
     void MoveCursor(Vector2 leftStickInput)
     {
         // 左スティックの入力に応じてカーソルを移動
         cursorPosition += leftStickInput * cursorSpeed * Time.deltaTime;
 
-        // 画面の境界内にカーソルを制限
+        // カーソルの移動範囲を画面内に制限
         cursorPosition.x = Mathf.Clamp(cursorPosition.x, 0, Screen.width);
         cursorPosition.y = Mathf.Clamp(cursorPosition.y, 0, Screen.height);
 
         // カーソルの位置をUIオブジェクトに反映
-        cursor.transform.position = cursorPosition;
-    }
-
-    void SelectObjectUnderCursor()
-    {
-        // カーソル位置からレイを飛ばしてオブジェクトを選択
-        Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-        ray.origin += Vector3.up * 0.8f; // レイの発射位置を上に調整
-
-        Vector3 boxHalfExtents = new Vector3(1.0f, 1.0f, 1.0f); // BoxCastの半径
-        RaycastHit hit;
-
-        // デバッグ描画
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green);
-
-        if (Physics.BoxCast(ray.origin, boxHalfExtents, ray.direction, out hit, Quaternion.identity, 10000f))
+        if (cursor != null)
         {
-            // ヒットしたコライダーがカプセルコライダーかどうか確認
-            if (hit.collider is CapsuleCollider)
-            {
-                if (hit.collider.gameObject.CompareTag("KAPIBARA"))
-                {
-                    selectedObject = hit.collider.gameObject;
-                    Debug.Log("KAPIBARAタグのカプセルコライダーを選択しました: " + selectedObject.name);
-                }
-                else
-                {
-                    selectedObject = null;
-                    Debug.Log("カプセルコライダーだがKAPIBARAタグがありません: " + hit.collider.gameObject.name);
-                }
-            }
-            else
-            {
-                selectedObject = null;
-                Debug.Log("カプセルコライダーではありません: " + hit.collider.gameObject.name);
-            }
-        }
-        else
-        {
-            selectedObject = null;
-            Debug.Log("何も選択されていません");
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(cursorPosition.x, cursorPosition.y, cameraDistance));
+            cursor.transform.position = worldPosition;
         }
     }
 
