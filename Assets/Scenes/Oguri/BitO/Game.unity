@@ -16315,7 +16315,7 @@ RectTransform:
   m_GameObject: {fileID: 305743344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1851322542}
@@ -25278,13 +25278,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487309538}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 355101795}
-  m_Father: {fileID: 737254037}
+  m_Father: {fileID: 645048866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -32925,6 +32925,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 938931299}
+  - {fileID: 487309541}
   m_Father: {fileID: 737254037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -33845,7 +33846,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 645048866}
-  - {fileID: 487309541}
   - {fileID: 508438450}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -33876,7 +33876,7 @@ MonoBehaviour:
   m_ONButton: {fileID: 1582315775}
   currentPanel: {fileID: 645048865}
   targetPanel: {fileID: 508438449}
-  canvas: {fileID: 0}
+  canvas: {fileID: 737254033}
 --- !u!114 &737254039
 MonoBehaviour:
   m_ObjectHideFlags: 0
