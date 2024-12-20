@@ -262,14 +262,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fb8ff724f973f440acf361c6efbc356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rot: 0.01
-  TimeIntensity:
-  - 1
-  - 1
-  - 1
-  - 1
+  rot: 12
+  lightShaft: {fileID: 11400000, guid: ba59e093efe178846bfd99b16c60f074, type: 2}
   DecayRateIntencity:
-  - 0.8
+  - 1
+  - 0.7
   - 0.5
 --- !u!1001 &44784913
 PrefabInstance:
@@ -885,6 +882,7 @@ GameObject:
   - component: {fileID: 258801937}
   - component: {fileID: 258801936}
   - component: {fileID: 258801939}
+  - component: {fileID: 258801940}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -982,6 +980,19 @@ MonoBehaviour:
   waveform: {fileID: 2800000, guid: e41f4726e37522348bee867507137bdc, type: 3}
   waveScale: 0.012
   strength: 0.042
+--- !u!114 &258801940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 258801935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed42064ef512ae44b82790625b08fca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  postEffect: {fileID: 11400000, guid: ba59e093efe178846bfd99b16c60f074, type: 2}
 --- !u!1001 &259197161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1899,7 +1910,7 @@ Transform:
   m_GameObject: {fileID: 517965887}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.91, y: -11.25, z: 8.59}
+  m_LocalPosition: {x: -27.91, y: -11.25, z: 10.21}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []

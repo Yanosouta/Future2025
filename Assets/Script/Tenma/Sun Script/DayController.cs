@@ -13,19 +13,20 @@ public class DayController : DayWeatherManager
     [SerializeField]
     private float rot = 0.01f;
 
-    [Header("太陽の光の強さ")]
-    [SerializeField]
-    private float[] TimeIntensity = { 1f, 1f, 1f, 1f };
+    public LightShaft lightShaft;
 
-    [Header("曇と雨の光の減衰値")]
+    [Header("天気毎の光の減衰値")]
     [SerializeField]
-    private float[] DecayRateIntencity = { 0.8f, 0.5f };
+    private float[] DecayRateIntencity = { 1.0f, 0.8f, 0.5f };
 
     public static new DayController instance;
     private Light DirectionLight;
-    private float totalIntencity = 1.0f;
     private float currentAngle;
     private float rotate = 1f;
+
+    private float defIntensity;
+    private Color sunColor;
+
 
     private void Awake()
     {
@@ -57,6 +58,9 @@ public class DayController : DayWeatherManager
     private void Start()
     {
         DirectionLight = this.GetComponent<Light>();
+        sunColor = this.GetComponent<Light>().color;
+
+        defIntensity = DirectionLight.intensity;
     }
 
 
@@ -90,17 +94,46 @@ public class DayController : DayWeatherManager
             UpdateEnvironment();
         }
 
-        //太陽の光の強さ
-        DirectionLightIntencity();
+        //夜の間だけひかりのつよさを調整
+        if(currentTimeOfDay == TimeOfDay.Night)
+        {
+            DirectionLight.intensity = 0.2f;
+        }
+        else
+        {
+            DirectionLight.intensity = defIntensity;
+        }
 
-        //光の強さの更新
-        DirectionLight.intensity = totalIntencity;
+        //色の減衰
+        if(currentTimeOfDay == TimeOfDay.Afternoon || currentTimeOfDay == TimeOfDay.Evening)
+        {
+            if (sunColor.r != lightShaft.TargetColor.r) 
+                sunColor.r -= lightShaft.SubtractionSpeed;
+            if (sunColor.g != lightShaft.TargetColor.g) 
+                sunColor.g -= lightShaft.SubtractionSpeed;
+            if (sunColor.b != lightShaft.TargetColor.b) 
+                sunColor.b -= lightShaft.SubtractionSpeed;
+        }
+        else sunColor = lightShaft.retentionColor;
 
-        //Debug.Log(currentTimeOfDay);
-        //Debug.Log(currentAngle);
-        //Debug.Log(currentWeather);
-        //Debug.Log(DirectionLight.intensity);
 
+
+        //天気を考慮 
+        switch (currentWeather)
+        {
+            case Weather.Sunny:
+                DirectionLight.intensity = defIntensity * DecayRateIntencity[0];
+                break;
+            case Weather.Cloudy:
+                DirectionLight.intensity = defIntensity * DecayRateIntencity[1];
+                break;
+            case Weather.Rainy:
+                DirectionLight.intensity = defIntensity * DecayRateIntencity[2];
+                break;
+        }
+
+
+        //**********コマンド***********
         //30分で一周
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.O))
         {
@@ -111,53 +144,6 @@ public class DayController : DayWeatherManager
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
         {
             SetDirectionLightRotate(12f);
-        }
-    }
-
-
-
-    private void DirectionLightIntencity()
-    {
-        //時間帯別に設定
-        switch (currentTimeOfDay)
-        {
-            //朝
-            case TimeOfDay.Morning:
-                totalIntencity = TimeIntensity[0];
-                break;
-
-            //昼
-            case TimeOfDay.Afternoon:
-                totalIntencity = TimeIntensity[1];
-                break;
-
-            //夕
-            case TimeOfDay.Evening:
-                totalIntencity = TimeIntensity[2];
-                break;
-
-            //夜
-            case TimeOfDay.Night:
-                totalIntencity = TimeIntensity[3];
-                break;
-        }
-
-        //天気別に設定
-        switch (currentWeather)
-        {
-            //晴
-            case Weather.Sunny:
-                break;
-
-            //曇
-            case Weather.Cloudy:
-                totalIntencity /= DecayRateIntencity[0];
-                break;
-
-            //雨
-            case Weather.Rainy:
-                totalIntencity /= DecayRateIntencity[1];
-                break;
         }
     }
 
