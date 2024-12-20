@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 26da8f4c753cba6479d333c48e3e93bd
+guid: 257f63b41c952d64991aa71b0bd3c4e6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Walk
+      name: sit
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 0
-      lastFrame: 44
+      lastFrame: 26
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

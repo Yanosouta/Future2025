@@ -9686,6 +9686,7 @@ MonoBehaviour:
   FeedPrefab: {fileID: 7808334792382160945, guid: 63ec4586218dc0247a69cc41824dfff6, type: 3}
   spawnPoint: {fileID: 1937125791}
   DebugMode: {fileID: 680880226}
+  Target: {fileID: 8243447687768067945, guid: 1e5163c4b5eb05e41aba49a56f69ca72, type: 3}
 --- !u!4 &1155828752
 Transform:
   m_ObjectHideFlags: 0
