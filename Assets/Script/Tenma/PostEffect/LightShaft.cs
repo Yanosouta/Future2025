@@ -76,7 +76,10 @@ public class LightShaft : PostEffectBase
 
         DirectionalLight = GameObject.FindGameObjectWithTag("DirectionalLight");
 
-        if (DirectionalLight != null) sun = DirectionalLight.GetComponent<Transform>();
+        if (DirectionalLight != null)
+        {
+            sun = DirectionalLight.GetComponent<Transform>();
+        }
 
         //色を保持
         sunColor = retentionColor;
@@ -86,6 +89,8 @@ public class LightShaft : PostEffectBase
     {
         //マテリアルを生成
         material = new Material(Resources.Load<Shader>("Shaders/LightShaft"));
+
+
     }
 
     public override void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -141,8 +146,6 @@ public class LightShaft : PostEffectBase
             if (sunColor.r != TargetColor.r) sunColor.r -= SubtractionSpeed;
             if (sunColor.g != TargetColor.g) sunColor.g -= SubtractionSpeed;
             if (sunColor.b != TargetColor.b) sunColor.b -= SubtractionSpeed;
-
-            //sunColor = Color.Lerp(sunColor, TargetColor, SubtractionSpeed * Time.deltaTime);
         }
         else sunColor = retentionColor;
 
@@ -190,7 +193,7 @@ public class LightShaft : PostEffectBase
             material.SetVector("_BlurRadius4", new Vector4(ofs, ofs, 0.0f, 0.0f));
         }
 
-        // 放射状の最終合成
+        // 放射状の最終合z
         material.SetVector("_SunColor", new Vector4(sunColor.r, sunColor.g, sunColor.b, sunColor.a) * sunShaftIntensity);
         material.SetTexture("_ColorBuffer", lrDepthBuffer);
 
