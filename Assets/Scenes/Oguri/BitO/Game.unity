@@ -27856,9 +27856,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a716a3884138746479e072da5c9b060f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 643190fede725cd439cebf192a75eac6, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -45295,6 +45295,8 @@ MonoBehaviour:
   - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
   - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
   parentObject: {fileID: 733160921}
+  minScale: 0.5
+  maxScale: 2
 --- !u!114 &823386155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50196,11 +50198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rot: 0.2
-  TimeIntensity:
-  - 1
-  - 1
-  - 1
-  - 1
+  lightShaft: {fileID: 0}
   DecayRateIntencity:
   - 0.8
   - 0.5
@@ -58488,6 +58486,8 @@ MonoBehaviour:
   maxObjects: 10
   nextSpawnTime: 0
   parentObject: {fileID: 733160921}
+  minScale: 0.5
+  maxScale: 2
   camChange: {fileID: 0}
 --- !u!4 &1253986244
 Transform:
