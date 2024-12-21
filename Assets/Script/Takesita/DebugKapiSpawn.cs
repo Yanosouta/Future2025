@@ -7,6 +7,10 @@ public class DebugKapiSpawn : MonoBehaviour
     public List<GameObject> aiPrefabs; // 生成するAIオブジェクトのPrefabリスト
     private List<GameObject> availablePrefabs; // 残りの生成可能なPrefabリスト
     public Transform parentObject; // 親オブジェクトをインスペクターから指定
+
+    public float minScale = 0.5f; // 最小スケール（インスペクターで設定可能）
+    public float maxScale = 2f;  // 最大スケール（インスペクターで設定可能）
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +41,9 @@ public class DebugKapiSpawn : MonoBehaviour
 
         // ランダムな位置を生成するための範囲を設定
         Vector3 randomPosition = new Vector3(
-            Random.Range(-28f, -13f), // X軸の範囲
+            Random.Range(-32.3f, -35.0f), // X軸の範囲
             -12.64f,  // Y軸は0に固定
-            Random.Range(-5f, 4f)  // Z軸の範囲
+            Random.Range(10.3f, 12f)  // Z軸の範囲
         );
 
         // 生成する位置を地面にスナップ
@@ -55,6 +59,10 @@ public class DebugKapiSpawn : MonoBehaviour
         GameObject spawnedObject = Instantiate(selectedPrefab, randomPosition, Quaternion.identity);
         //Instantiate(selectedPrefab, randomPosition, Quaternion.identity);
         Debug.Log("AI object spawned at: " + randomPosition + " using prefab: " + selectedPrefab.name);
+
+        // ランダムなスケールを計算し、全軸に適用
+        float randomScale = Random.Range(minScale, maxScale);
+        spawnedObject.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
 
         // 生成したオブジェクトの親を設定
         spawnedObject.transform.SetParent(parentObject);

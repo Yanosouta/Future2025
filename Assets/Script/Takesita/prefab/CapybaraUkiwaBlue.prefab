@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 310f01beb8a01eb46803f6394badb504, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9bb06b8242ab5b447b1b247abcddf571, type: 2}
+      objectReference: {fileID: 2100000, guid: 505a24496a67132459a1098fa31b62e6, type: 2}
     - target: {fileID: 919132149155446097, guid: 310f01beb8a01eb46803f6394badb504, type: 3}
       propertyPath: m_Name
       value: ukiwa
@@ -140,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 257f63b41c952d64991aa71b0bd3c4e6, type: 3}
       propertyPath: m_Name
-      value: CapybaraUkiwadonut
+      value: CapybaraUkiwaBlue
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -163,7 +163,7 @@ PrefabInstance:
       addedObject: {fileID: -1123582114805696877}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 257f63b41c952d64991aa71b0bd3c4e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8210195817284976375}
+      addedObject: {fileID: -4779597323255588027}
   m_SourcePrefab: {fileID: 100100000, guid: 257f63b41c952d64991aa71b0bd3c4e6, type: 3}
 --- !u!4 &6351087641015492044 stripped
 Transform:
@@ -267,7 +267,7 @@ CapsuleCollider:
   m_Height: 0.07658462
   m_Direction: 2
   m_Center: {x: -0.00013615846, y: 0.019790687, z: 0.00068045856}
---- !u!54 &8210195817284976375
+--- !u!54 &-4779597323255588027
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
