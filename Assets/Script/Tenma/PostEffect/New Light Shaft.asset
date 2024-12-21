@@ -18,7 +18,7 @@ MonoBehaviour:
   radialBlurIterations: 2
   retentionColor: {r: 1, g: 1, b: 1, a: 1}
   sunThreshold: {r: 0.87, g: 0.74, b: 0.65, a: 1}
-  TargetColor: {r: 1, g: 1, b: 1, a: 1}
+  TargetColor: {r: 1, g: 0.42223537, b: 0.1566037, a: 1}
   SubtractionSpeed: 0.1
   sunShaftBlurRadius: 2.5
   sunShaftIntensity: 1.15
