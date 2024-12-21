@@ -65,6 +65,10 @@ PrefabInstance:
       value: Capybara
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 26da8f4c753cba6479d333c48e3e93bd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 26da8f4c753cba6479d333c48e3e93bd, type: 3}
       propertyPath: m_TagString
       value: KAPIBARA
       objectReference: {fileID: 0}
@@ -113,6 +117,7 @@ MonoBehaviour:
   idleDuration: 1
   eatingDuration: 5
   IdleRotationSpeed: 5
+  walkingMaxDuration: 5
   minRange: 5
   maxRange: 10
   destinationMarkerPrefab: {fileID: 8243447687768067945, guid: 1e5163c4b5eb05e41aba49a56f69ca72, type: 3}
