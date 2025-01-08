@@ -164,7 +164,7 @@ public class KapiDictionary : MonoBehaviour
         }
     }
 
-    void NextPage()
+    public void NextPage()
     {
         if ((currentPage + 1) * imagesPerPage < images.Length)
         {
@@ -174,7 +174,7 @@ public class KapiDictionary : MonoBehaviour
         }
     }
 
-    void PreviousPage()
+    public void PreviousPage()
     {
         if (currentPage > 0)
         {
