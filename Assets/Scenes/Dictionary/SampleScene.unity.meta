@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 57c2d7ab929d33f409e7516d99b3abf9
+<<<<<<<< HEAD:Assets/Scenes/Dictionary/SampleScene.unity.meta
+guid: f92ee8c8c32316c408b266eeb4681461
+========
+guid: 83a1e0015b2b4eb47b0c32be22ddb509
+>>>>>>>> work:Assets/Scenes/AKA/testeffect.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

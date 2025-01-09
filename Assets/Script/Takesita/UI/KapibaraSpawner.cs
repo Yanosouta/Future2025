@@ -6,10 +6,13 @@ public class KapibaraSpawner : MonoBehaviour
 {
     public List<GameObject> aiPrefabs; // 生成するAIオブジェクトのPrefabリスト
     public float spawnInterval = 5f;   // 生成する間隔（秒）
-    public int maxObjects = 10;        // 生成するAIオブジェクトの最大数
+    public int maxObjects = 10;       // 生成するAIオブジェクトの最大数
     public float nextSpawnTime;       // 次に生成する時間
     private List<GameObject> availablePrefabs; // 残りの生成可能なPrefabリスト
-    public Transform parentObject; // 親オブジェクトをインスペクターから指定
+    public Transform parentObject;    // 親オブジェクトをインスペクターから指定
+
+    public float minScale = 0.5f; // 最小スケール（インスペクターで設定可能）
+    public float maxScale = 2f;  // 最大スケール（インスペクターで設定可能）
 
     public CameraChange camChange;
 
@@ -46,12 +49,11 @@ public class KapibaraSpawner : MonoBehaviour
             return;
         }
 
-        // ランダムな位置を生成するための範囲を設定
         Vector3 randomPosition = new Vector3(
-            Random.Range(-28f, -13f), // X軸の範囲
-            -12.64f,  // Y軸は0に固定
-            Random.Range(-5f, 4f)  // Z軸の範囲
-        );
+                   Random.Range(-32.3f, -35.0f), // X軸の範囲
+                   -12.64f,  // Y軸は0に固定
+                   Random.Range(10.3f, 12f)  // Z軸の範囲
+               );
 
         // 生成する位置を地面にスナップ
         RaycastHit hit;
@@ -64,8 +66,12 @@ public class KapibaraSpawner : MonoBehaviour
         int randomIndex = Random.Range(0, availablePrefabs.Count);
         GameObject selectedPrefab = availablePrefabs[randomIndex];
         GameObject spawnedObject = Instantiate(selectedPrefab, randomPosition, Quaternion.identity);
-        //Instantiate(selectedPrefab, randomPosition, Quaternion.identity);
-        Debug.Log("AI object spawned at: " + randomPosition + " using prefab: " + selectedPrefab.name);
+
+        // ランダムなスケールを計算し、全軸に適用
+        float randomScale = Random.Range(minScale, maxScale);
+        spawnedObject.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
+
+        Debug.Log("AI object spawned at: " + randomPosition + " with uniform scale: " + randomScale + " using prefab: " + selectedPrefab.name);
 
         // 生成したオブジェクトの親を設定
         spawnedObject.transform.SetParent(parentObject);

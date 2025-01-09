@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eaa860f82238674ebc12d8b7c133122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleWeight: 80
-  walkingWeight: 20
+  idleWeight: 100
+  walkingWeight: 0
   idleDuration: 1
   eatingDuration: 5
   IdleRotationSpeed: 5
@@ -114,6 +114,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   detectionRadius: 2
+  eatingDistance: 1.5
 --- !u!195 &1911642561013296071
 NavMeshAgent:
   m_ObjectHideFlags: 0

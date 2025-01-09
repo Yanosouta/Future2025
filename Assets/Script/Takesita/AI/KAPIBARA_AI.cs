@@ -24,6 +24,8 @@ public class KAPIBARA_AI : MonoBehaviour
     public float  IdleRotationSpeed = 10f;
     private float IdletargetRotation; // 次の目標回転角度
     private float IdlenextRotationTime = 0f; // 次のランダムな方向決定時間
+    public float walkingMaxDuration = 5.0f; // Walkingステートの最大持続時間（秒）
+    private float walkingTimer = 0.0f; // Walkingステート用のタイマー
 
     private NavMeshAgent agent; // NavMeshコンポーネント
     private Animator animator;  // Animatorコンポーネント
@@ -104,10 +106,31 @@ public class KAPIBARA_AI : MonoBehaviour
 
                 case AIState.Walking:
                     Debug.Log("状態: Walking");
-                    //animator.SetInteger("state", 1); // Walkingアニメーション
                     SetNewDestination(); // 目的地を設定する
-                    yield return new WaitUntil(() => !agent.pathPending && agent.remainingDistance < 0.5f); // 目的地到着まで待機
-                    currentState = AIState.Idle; // WalkingからIdleへ遷移
+                    walkingTimer = 0.0f; // タイマーリセット
+
+                    while (currentState == AIState.Walking)
+                    {
+                        walkingTimer += Time.deltaTime; // タイマーを進める
+
+                        // 経過時間が制限を超えた場合
+                        if (walkingTimer >= walkingMaxDuration)
+                        {
+                            Debug.Log("Walkingの制限時間を超えたためIdleステートに遷移します。");
+                            currentState = AIState.Idle;
+                            break;
+                        }
+
+                        // 目的地に到着した場合
+                        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                        {
+                            Debug.Log("目的地に到着したためIdleステートに遷移します。");
+                            currentState = AIState.Idle;
+                            break;
+                        }
+
+                        yield return null; // 次のフレームまで待つ
+                    }
                     break;
 
                 case AIState.Eating:

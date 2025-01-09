@@ -65,6 +65,7 @@ public class TitleButtonNavigation : MonoBehaviour
                 m_StartButton.Select();
             }
         }
+        Debug.Log(m_State);
     }
 
     // }ŠÓƒ{ƒ^ƒ“‚Ìˆ—

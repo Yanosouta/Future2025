@@ -47,8 +47,8 @@ public class cursorCamera : MonoBehaviour
         if (Gamepad.current != null && m_State.GetButtonB() || Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             isCursorVisible = !isCursorVisible;
-            cursor.SetActive(isCursorVisible); 
-            isCursorEnabled = true; 
+            cursor.SetActive(isCursorVisible);
+            isCursorEnabled = true;
         }
 
         // カーソルが表示されている場合、左スティックで移動
@@ -80,7 +80,7 @@ public class cursorCamera : MonoBehaviour
             SelectObjectUnderCursor();
 
             // AボタンまたはEnterキーが押された場合、カメラを選択されたオブジェクトの前に移動
-            if (selectedObject != null && (isCursorEnabled && Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.enterKey.wasPressedThisFrame))  
+            if (selectedObject != null && (isCursorEnabled && Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.enterKey.wasPressedThisFrame))
             {
                 MoveCameraToSelectedObject();
                 DisableCursorControl(); // カーソル操作を無効にする
@@ -101,21 +101,77 @@ public class cursorCamera : MonoBehaviour
         cursor.transform.position = cursorPosition;
     }
 
+    //void SelectObjectUnderCursor()
+    //{
+    //    // カーソル位置からレイを飛ばしてオブジェクトを選択
+    //    Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
+    //    ray.origin += Vector3.left * 1.0f + Vector3.up * 1.3f; // レイの発射位置を左に調整し、上に移動
+
+    //    Vector3 boxHalfExtents = new Vector3(1.0f, 1.0f, 1.0f); // BoxCastの半径
+    //    RaycastHit hit;
+
+    //    // デバッグ描画
+    //    Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green);
+
+    //    if (Physics.BoxCast(ray.origin, boxHalfExtents, ray.direction, out hit, Quaternion.identity, 10000f))
+    //    {
+    //        // ヒットしたコライダーがカプセルコライダーかどうか確認
+    //        if (hit.collider is CapsuleCollider)
+    //        {
+    //            if (hit.collider.gameObject.CompareTag("KAPIBARA"))
+    //            {
+    //                selectedObject = hit.collider.gameObject;
+    //                Debug.Log("KAPIBARAタグのカプセルコライダーを選択しました: " + selectedObject.name);
+    //            }
+    //            else
+    //            {
+    //                selectedObject = null;
+    //                Debug.Log("カプセルコライダーだがKAPIBARAタグがありません: " + hit.collider.gameObject.name);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            selectedObject = null;
+    //            Debug.Log("カプセルコライダーではありません: " + hit.collider.gameObject.name);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        selectedObject = null;
+    //        Debug.Log("何も選択されていません");
+    //    }
+    //}
+
     void SelectObjectUnderCursor()
     {
-        // カーソル位置からレイを飛ばしてオブジェクトを選択
-        Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-        ray.origin += Vector3.up * 0.8f; // レイの発射位置を上に調整
+        if (mainCamera == null)
+        {
+            Debug.LogError("mainCamera が設定されていません！");
+            return;
+        }
 
-        Vector3 boxHalfExtents = new Vector3(1.0f, 1.0f, 1.0f); // BoxCastの半径
+        // カーソル位置をワールド座標に変換
+        Vector3 cursorWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(cursorPosition.x, cursorPosition.y, cameraDistance));
+
+        // カメラ位置とカーソル位置から方向ベクトルを計算
+        Vector3 direction = (cursorWorldPosition - Camera.main.transform.position).normalized;
+
+        // BoxCastの中心位置（レイの出現位置を左に1.0f、上に1.0fずらす）
+        Vector3 boxOrigin = Camera.main.transform.position + Camera.main.transform.right * -0.8f + Camera.main.transform.up * 1.0f;
+
+        // BoxCastの半径（ボックスサイズの半分）
+        Vector3 boxHalfExtents = new Vector3(1.0f, 1.0f, 1.0f);
+
+        // BoxCastの結果を取得
         RaycastHit hit;
+        bool isHit = Physics.BoxCast(boxOrigin, boxHalfExtents, direction, out hit, Quaternion.identity, 100f);
 
         // デバッグ描画
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green);
+        Debug.DrawRay(boxOrigin, direction * 100f, isHit ? Color.red : Color.green);
 
-        if (Physics.BoxCast(ray.origin, boxHalfExtents, ray.direction, out hit, Quaternion.identity, 10000f))
+        if (isHit)
         {
-            // ヒットしたコライダーがカプセルコライダーかどうか確認
+            // ヒットしたコライダーがカプセルコライダーかどうか確認 
             if (hit.collider is CapsuleCollider)
             {
                 if (hit.collider.gameObject.CompareTag("KAPIBARA"))
@@ -141,6 +197,8 @@ public class cursorCamera : MonoBehaviour
             Debug.Log("何も選択されていません");
         }
     }
+
+
 
 
 
