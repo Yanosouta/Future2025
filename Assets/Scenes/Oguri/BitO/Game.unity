@@ -33763,6 +33763,7 @@ GameObject:
   - component: {fileID: 737254038}
   - component: {fileID: 737254039}
   - component: {fileID: 737254040}
+  - component: {fileID: 737254041}
   m_Layer: 5
   m_Name: Canvas(menu)
   m_TagString: Untagged
@@ -33899,6 +33900,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a5dbbbc63ed174b8e18bf590728752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &737254041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737254033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee5ff1c93e8a484dbc6b05913900ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &740011246
@@ -45284,19 +45297,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiPrefabs:
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
-  - {fileID: 8528008212579847660, guid: aa9ebc9ea1bf3a14faf4dce73a92edc5, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
   parentObject: {fileID: 733160921}
-  minScale: 0.5
-  maxScale: 2
+  minScale: 20
+  maxScale: 40
 --- !u!114 &823386155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58479,15 +58492,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiPrefabs:
-  - {fileID: 8528008212579847660, guid: 813fe304097d99c42a6dc7e2caad117a, type: 3}
-  - {fileID: 8528008212579847660, guid: 005e07fecd87c174d9fa0a3469fafb51, type: 3}
-  - {fileID: 8528008212579847660, guid: 7fc1c0c90629f7043a005bc6fe8f99cc, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: fc07486165a5b534cb993734b9a6efc0, type: 3}
+  - {fileID: 7018224085350549725, guid: 0df7cc90fd4d14641ae9b2d30505f938, type: 3}
+  - {fileID: 7018224085350549725, guid: c922dfc82bad8614892560fb583176fa, type: 3}
   spawnInterval: 60
   maxObjects: 10
   nextSpawnTime: 0
   parentObject: {fileID: 733160921}
-  minScale: 0.5
-  maxScale: 2
+  minScale: 20
+  maxScale: 40
   camChange: {fileID: 0}
 --- !u!4 &1253986244
 Transform:
