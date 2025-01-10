@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class GameButtonNavigation : MonoBehaviour
 {
-    [SerializeField, Label("ポーズ画面")]
-    public GameObject MainPanel;
     [SerializeField, Label("操作方法画面")]
     public GameObject Panel_Button_4;
 
@@ -16,6 +14,8 @@ public class GameButtonNavigation : MonoBehaviour
     public Button m_BookButton;
     [SerializeField, Label("操作方法")]
     public Button m_OperationButton;
+    [SerializeField, Label("タイトルに戻る")]
+    public Button m_TitleButton;
     [SerializeField, Label("終了")]
     public Button m_EndButton;
 
@@ -24,7 +24,8 @@ public class GameButtonNavigation : MonoBehaviour
     [SerializeField, Label("終了する")]
     public Button m_ONButton;
 
-    private Button currentButton;
+    private List<Button> buttons; // ボタンリスト
+    private int currentIndex = 0; // 現在のフォーカス位置
 
     // 表示・非表示にするパネルの参照
     [SerializeField, Label("メインのパネル")]
@@ -43,10 +44,14 @@ public class GameButtonNavigation : MonoBehaviour
         // コントローラー
         m_State = GetComponent<ControllerState>();
 
+        // ボタンリストを初期化
+        buttons = new List<Button> { m_StartButton, m_BookButton, m_OperationButton, m_TitleButton, m_EndButton };
+
         // 最初のボタンにフォーカスを当てる
-        currentButton = m_StartButton;
-        m_StartButton.Select();
-        m_BookButton.onClick.AddListener(OnBookButtonClick);
+        currentIndex = 0;
+        buttons[currentIndex].Select();
+
+        m_StartButton.onClick.AddListener(MenuClose);
         m_EndButton.onClick.AddListener(OnEnd_ONButtonClick);
         //m_ONButton.onClick.AddListener(OnEnd_ONButtonClick);
         m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
@@ -55,44 +60,41 @@ public class GameButtonNavigation : MonoBehaviour
 
     void Update()
     {
-        // 左右の矢印キーの入力をチェック
-        if (m_State.GetButtonDown())
+        // 十字キーの入力を取得
+        if (m_State.GetButtonUp())
         {
-            if (currentButton == m_StartButton)
-            {
-                currentButton = m_BookButton;
-                m_BookButton.Select();
-            }
+            MoveFocus(-1); // 上キーでフォーカスを移動
         }
-        else if (m_State.GetButtonUp())
+        else if (m_State.GetButtonDown())
         {
-            if (currentButton == m_BookButton)
-            {
-                currentButton = m_StartButton;
-                m_StartButton.Select();
-            }
+            MoveFocus(1); // 下キーでフォーカスを移動
         }
+    }
+
+    // フォーカス移動ロジック
+    void MoveFocus(int direction)
+    {
+        // 現在のインデックスを更新
+        currentIndex = (currentIndex + direction + buttons.Count) % buttons.Count;
+
+        // 新しいボタンにフォーカスを移動
+        buttons[currentIndex].Select();
     }
 
     // ポーズ画面を閉じる
     public void MenuClose()
     {
-        // MainPanelを非表示
+        // currentPanelを非表示
         Time.timeScale = 1.0f; // ゲーム時間を再開
-        canvas.SetActive(false);
-    }
 
-    // 図鑑表示
-    void OnBookButtonClick()
-    {
-        // ここに図鑑処理！！
+        canvas.SetActive(false);
     }
 
     // 操作画面を開く/閉じる
     public void OperationSelect()
     {
-        // MainPanelを非表示
-        MainPanel.SetActive(false);
+        // currentPanelを非表示
+        currentPanel.SetActive(false);
 
         // Panel_Button_3を表示
         Panel_Button_4.SetActive(true);
