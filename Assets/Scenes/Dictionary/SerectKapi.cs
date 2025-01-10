@@ -16,9 +16,18 @@ public class SerectKapi : MonoBehaviour
 
     private int Kapidx = 0;
 
+    public GameObject m_camera;
+    // コントローラーもの
+    ControllerBase m_Base;
+    ControllerState m_State;
+    Vector2 m_Stick;
+    bool m_StickFlg = false;
     // Start is called before the first frame update
     void Start()
     {
+        // コントローラー
+        m_Base = m_camera.GetComponent<ControllerBase>();
+        m_State = m_camera.GetComponent<ControllerState>();
         //インスタンスの取得
         KapiData = new KapiDicData();
 
@@ -31,10 +40,15 @@ public class SerectKapi : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(Vec[0].x,Vec[0].y);
         }
         SerectKapinum = 0;
+
+        m_Stick = Vector2.zero;
     }
 
     void Update()
     {
+        m_Stick = m_Base.GetStick();
+        if (m_Stick == Vector2.zero)
+            m_StickFlg = false;
         //キー入力されたか
         bool IsInput = false;
 
@@ -54,7 +68,7 @@ public class SerectKapi : MonoBehaviour
 
         int PageNum = 0;
         //→
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (m_Stick.x > 0.1f && !m_StickFlg)
         {
             PageNum = KapiNum.GetKapiPage();
             //選択カピの変更
@@ -66,9 +80,10 @@ public class SerectKapi : MonoBehaviour
 
             Debug.Log("現在選択中カピ:" + SerectKapinum);
             IsInput = true;
+            m_StickFlg = true;
         }
         //←
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (m_Stick.x < -0.1f && !m_StickFlg)
         {
             PageNum = KapiNum.GetKapiPage();
             //選択カピの変更
@@ -80,9 +95,10 @@ public class SerectKapi : MonoBehaviour
 
             Debug.Log("現在選択中カピ:" + SerectKapinum);
             IsInput = true;
+            m_StickFlg = true;
         }
         //↑
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (m_Stick.y > 0.1f && !m_StickFlg)
         {
             PageNum = KapiNum.GetKapiPage();
             //選択カピの変更
@@ -94,9 +110,10 @@ public class SerectKapi : MonoBehaviour
 
             Debug.Log("現在選択中カピ:" + SerectKapinum);
             IsInput = true;
+            m_StickFlg = true;
         }
         //↓
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (m_Stick.y < -0.1f && !m_StickFlg)
         {
             PageNum = KapiNum.GetKapiPage();
             //選択カピの変更
@@ -108,14 +125,20 @@ public class SerectKapi : MonoBehaviour
 
             Debug.Log("現在選択中カピ:" + SerectKapinum);
             IsInput = true;
+            m_StickFlg = true;
         }
 
 
-        if(Input.GetKeyDown(KeyCode.Return))//エンターが入力されたら選択中カピの名前入力を可能に
+        if(m_State.GetButtonY())//エンターが入力されたら選択中カピの名前入力を可能に
         {
             Nadukeoya.ActiveNameInput(SerectKapinum);
-        }
 
+        }
+        if (m_State.GetButtonA())
+        {
+            Nadukeoya.HandleEndEdit();
+
+        }
 
         if (IsInput)
         {

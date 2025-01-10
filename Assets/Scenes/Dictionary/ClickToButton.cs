@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,8 +9,14 @@ public class ClickRoButton : MonoBehaviour
     KapiDicData KapiData;
     KapiDictionary KapiDic;
 
+    public GameObject m_camera;
+    // コントローラーもの
+    ControllerState m_State;
+
     void Start()
     {
+        // コントローラー
+        m_State = m_camera.GetComponent<ControllerState>();
         DKapi = new SerectKapi();
         KapiDic = new KapiDictionary();
     }
@@ -24,20 +31,19 @@ public class ClickRoButton : MonoBehaviour
             KapiDic = FindObjectOfType<KapiDictionary>();
 
         //ページ移動
-        if (Input.GetKeyDown(KeyCode.L))
+        if (m_State.GetButtonL())
         {
             KapiDic.NextPage();
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (m_State.GetButtonR())
         {
             KapiDic.PreviousPage();
         }
         //昇順降順
-        if (Input.GetKeyDown(KeyCode.Alpha8))
+        if (m_State.GetButtonX())
         {
             ASortKapi();
         }
-
         //登録(デバッグ用なのでコントローラ対応不必要)
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
