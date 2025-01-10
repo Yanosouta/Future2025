@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ShowCanvasOnEnter : MonoBehaviour
 {
     public GameObject canvas; // 非表示にしているCanvas
+    public GameObject[] panels; // 4つのパネルを格納する配列
+    public GameObject firstButton; // 最初にフォーカスを当てたいボタン
+
 
     public GameObject m_camera;
     // コントローラーもの
@@ -18,8 +22,6 @@ public class ShowCanvasOnEnter : MonoBehaviour
     {
         m_State = m_camera.GetComponent<ControllerState>();
         m_Controller = m_camera.GetComponent<ControllerBase>();
-        // コントローラー
-        //m_State = GetComponent<ControllerState>();
     }
 
     void Update()
@@ -46,13 +48,12 @@ public class ShowCanvasOnEnter : MonoBehaviour
 
     private void TogglePause()
     {
-        if (canvas != null)
+        if (canvas != null && panels.Length == 4) // パネルが3つ登録されている場合
         {
-            
             // 現在のアクティブ状態を反転させる
             isActive = canvas.activeSelf;
             canvas.SetActive(!isActive);
-            // ゲーム内の時間を停止または再開
+
             if (isActive) // 表示状態だったら
             {
                 Time.timeScale = 1.0f; // 時間を再開
@@ -60,10 +61,26 @@ public class ShowCanvasOnEnter : MonoBehaviour
             else // 非表示だったら
             {
                 Time.timeScale = 0.0f; // 時間を停止
+
+                // パネルの制御
+                panels[0].SetActive(true); // 1つ目のパネルを表示
+                panels[1].SetActive(false); // 2つ目を非表示
+                panels[2].SetActive(false); // 3つ目を非表示
+                panels[3].SetActive(false); // 3つ目を非表示
+
+                // フォーカスを最初のボタンに設定
+                SetButtonFocus(firstButton);
             }
-            
-            
         }
     }
 
+    private void SetButtonFocus(GameObject button)
+    {
+        if (button != null)
+        {
+            // 現在の選択を解除して新しいボタンを選択
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(button);
+        }
+    }
 }
