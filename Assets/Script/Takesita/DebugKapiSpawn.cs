@@ -41,7 +41,7 @@ public class DebugKapiSpawn : MonoBehaviour
 
         // ƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚ğ¶¬‚·‚é‚½‚ß‚Ì”ÍˆÍ‚ğİ’è
         Vector3 randomPosition = new Vector3(
-            Random.Range(-32.3f, -35.0f), // X²‚Ì”ÍˆÍ
+            Random.Range(-30.3f, -25.0f), // X²‚Ì”ÍˆÍ
             -12.64f,  // Y²‚Í0‚ÉŒÅ’è
             Random.Range(10.3f, 12f)  // Z²‚Ì”ÍˆÍ
         );
