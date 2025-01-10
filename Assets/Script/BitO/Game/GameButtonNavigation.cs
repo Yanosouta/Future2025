@@ -21,6 +21,8 @@ public class GameButtonNavigation : MonoBehaviour
 
     [SerializeField, Label("操作画面のボタン")]
     public Button m_OpOFFButton;
+    [SerializeField, Label("図鑑画面のボタン")]
+    public Button m_OpOFFBookButton;
     [SerializeField, Label("終了しない")]
     public Button m_OFFButton;
     [SerializeField, Label("終了する")]
@@ -34,6 +36,8 @@ public class GameButtonNavigation : MonoBehaviour
     public GameObject currentPanel;
     [SerializeField, Label("終了用のパネル")]
     public GameObject targetPanel;
+    [SerializeField, Label("図鑑のパネル")]
+    public GameObject BookPanel;
 
     // コントローラーもの
     ControllerState m_State;
@@ -63,7 +67,8 @@ public class GameButtonNavigation : MonoBehaviour
         m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
 
         m_OpOFFButton.onClick.AddListener(OperationClose);
-
+        m_BookButton.onClick.AddListener(OpenBook);
+        m_OpOFFBookButton.onClick.AddListener(CloseBook);
     }
 
     void Update()
@@ -94,7 +99,7 @@ public class GameButtonNavigation : MonoBehaviour
     {
         // currentPanelを非表示
         Time.timeScale = 1.0f; // ゲーム時間を再開
-
+        BookPanel.SetActive(false);
         canvas.SetActive(false);
     }
 
@@ -187,5 +192,35 @@ public class GameButtonNavigation : MonoBehaviour
             }
         }
     }
+    void OpenBook()
+    {
+        // currentPanelを非表示
+        currentPanel.SetActive(false);
 
+        // Panel_Button_4を表示
+        BookPanel.SetActive(true);
+
+        // 操作画面内の最初のボタンにフォーカスを移動
+        Button firstButton = BookPanel.GetComponentInChildren<Button>();
+        if (firstButton != null)
+        {
+            firstButton.Select();
+        }
+    }
+    void CloseBook() 
+    {
+        BookPanel.SetActive(false);
+
+        currentPanel.SetActive(true);
+
+        // メインパネルの最初のボタンにフォーカスを戻す
+        if (currentPanel != null)
+        {
+            Button mainFirstButton = currentPanel.GetComponentInChildren<Button>();
+            if (mainFirstButton != null)
+            {
+                mainFirstButton.Select();
+            }
+        }
+    }
 }
