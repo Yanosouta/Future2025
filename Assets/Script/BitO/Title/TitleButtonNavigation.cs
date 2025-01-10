@@ -19,7 +19,8 @@ public class TitleButtonNavigation : MonoBehaviour
     [SerializeField, Label("終了する")]
     public Button m_ONButton;
 
-    private Button currentButton;
+    private List<Button> buttons; // ボタンリスト
+    private int currentIndex = 0; // 現在のフォーカス位置
 
     // 表示・非表示にするパネルの参照
     [SerializeField, Label("メインのパネル")]
@@ -30,17 +31,30 @@ public class TitleButtonNavigation : MonoBehaviour
     // コントローラーもの
     ControllerState m_State;
 
+    private void OnEnable()
+    {
+        StartCoroutine(SelectButtonOnEnable());
+    }
+
+    private IEnumerator SelectButtonOnEnable()
+    {
+        yield return null; // フレーム待機
+        m_StartButton.Select();
+    }
+
     void Start()
     {
         // コントローラー
         m_State = GetComponent<ControllerState>();
 
+        // ボタンリストを初期化
+        buttons = new List<Button> { m_StartButton, m_BookButton, m_EndButton };
+
         // 最初のボタンにフォーカスを当てる
-        currentButton = m_StartButton;
-        m_StartButton.Select();
+        currentIndex = 0;
+        buttons[currentIndex].Select();
 
         // ボタンにクリックイベントを追加
-        m_BookButton.onClick.AddListener(OnBookButtonClick);
         m_EndButton.onClick.AddListener(OnEndButtonClick);
         m_ONButton.onClick.AddListener(OnEnd_ONButtonClick);
         m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
@@ -48,30 +62,25 @@ public class TitleButtonNavigation : MonoBehaviour
 
     void Update()
     {
-        // 左右の矢印キーの入力をチェック
-        if (m_State.GetButtonDown())
+        // 上キーが押された場合
+        if (m_State.GetButtonUp())
         {
-            if (currentButton == m_StartButton)
-            {
-                currentButton = m_BookButton;
-                m_BookButton.Select();
-            }
+            MoveFocus(-1); // 上に移動
         }
-        else if (m_State.GetButtonUp())
+        // 下キーが押された場合
+        else if (m_State.GetButtonDown())
         {
-            if (currentButton == m_BookButton)
-            {
-                currentButton = m_StartButton;
-                m_StartButton.Select();
-            }
+            MoveFocus(1); // 下に移動
         }
-        Debug.Log(m_State);
     }
 
-    // 図鑑ボタンの処理
-    void OnBookButtonClick()
+    private void MoveFocus(int direction)
     {
-        // 図鑑移動の処理をここに！！
+        // インデックスを更新し、ループさせる
+        currentIndex = (currentIndex + direction + buttons.Count) % buttons.Count;
+
+        // 新しいボタンにフォーカスを移動
+        buttons[currentIndex].Select();
     }
 
     // 終了ボタン処理
