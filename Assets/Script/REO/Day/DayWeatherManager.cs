@@ -22,6 +22,7 @@ public class DayWeatherManager : MonoBehaviour
         Rainy
     }
 
+    protected static TimeOfDay beforeTimeOfDay;
     protected static TimeOfDay currentTimeOfDay;
     protected static Weather currentWeather;
     protected static Weather futureWeather;
@@ -108,6 +109,12 @@ public class DayWeatherManager : MonoBehaviour
     public Weather GetFutureWeather()
     {
         return futureWeather;
+    }
+
+
+    public TimeOfDay GetBeforeTimeOfDay()
+    {
+        return beforeTimeOfDay;
     }
 
 

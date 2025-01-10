@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OutdoorLIght : MonoBehaviour
 {
-    private DirectionLightRotate dlr;
+    private DayWeatherManager Manager;
 
     public new Light light;
 
@@ -30,7 +30,7 @@ public class OutdoorLIght : MonoBehaviour
 
     private void Start()
     {
-        dlr = FindObjectOfType<DirectionLightRotate>();
+        Manager = FindObjectOfType<DayWeatherManager>();
 
         ChangeEmissionColor(Color.white);
         defaultColor = emissionColor = material.GetColor("_EmissionColor");
@@ -40,21 +40,22 @@ public class OutdoorLIght : MonoBehaviour
     void Update()
     {
         //昼から夜に変わった時
-        if (dlr.GetNight() != bDecision && dlr.GetNight() == true)
+        if (Manager.GetCurrentTimeOfDay() == DayWeatherManager.TimeOfDay.Night 
+            && Manager.GetBeforeTimeOfDay() != DayWeatherManager.TimeOfDay.Night)
         {
             //Lightを点滅させてから点ける
             StartCoroutine(BlinkAndTurnOn());
         }
 
         //昼はライトを消す
-        if(dlr.GetNight() == false)
+        if(Manager.GetCurrentTimeOfDay() != DayWeatherManager.TimeOfDay.Night)
         {
             light.enabled = false;
             ChangeEmissionColor(defaultColor);
         }
 
         //フラグの更新
-        bDecision = dlr.GetNight();
+        //bDecision = Manager.GetNight();
     }
 
     private IEnumerator BlinkAndTurnOn()
