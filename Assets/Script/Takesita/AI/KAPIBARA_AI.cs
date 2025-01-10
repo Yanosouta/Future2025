@@ -26,6 +26,10 @@ public class KAPIBARA_AI : MonoBehaviour
     private float IdlenextRotationTime = 0f; // 次のランダムな方向決定時間
     public float walkingMaxDuration = 5.0f; // Walkingステートの最大持続時間（秒）
     private float walkingTimer = 0.0f; // Walkingステート用のタイマー
+    public float normalSpeed = 3.5f;   // 通常時歩行速度
+    public float waterSpeed = 1.5f;    // 水中時歩行速度
+
+    public LayerMask waterLayer; // 水のレイヤー
 
     private NavMeshAgent agent; // NavMeshコンポーネント
     private Animator animator;  // Animatorコンポーネント
@@ -175,7 +179,15 @@ public class KAPIBARA_AI : MonoBehaviour
 
             Debug.Log("New Destination Set: " + currentDestination); // デバッグ用
         }
-
+        // 水中判定
+        if (IsInWater())
+        {
+            agent.speed = waterSpeed; // 水中時の速度を設定
+        }
+        else
+        {
+            agent.speed = normalSpeed; // 通常速度を設定
+        }
         // 目的地に向かう方向を向く
         Vector3 direction = (currentDestination - transform.position).normalized;
         if (direction.magnitude > 0)
@@ -307,5 +319,14 @@ public class KAPIBARA_AI : MonoBehaviour
             currentFood = null;
         }
     }
+    // 水中にいるかを判定するメソッド
+    private bool IsInWater()
+    {
+        // プレイヤーの足元にSphereCastを行い、水レイヤーに触れているか確認
+        float sphereRadius = 0.5f; // SphereCastの半径
+        Vector3 sphereOrigin = transform.position + Vector3.up * 0.5f; // AIの位置から少し上
+        float sphereDistance = 1f; // 判定する距離
 
+        return Physics.SphereCast(sphereOrigin, sphereRadius, Vector3.down, out RaycastHit hit, sphereDistance, waterLayer);
+    }
 }
