@@ -19,6 +19,8 @@ public class GameButtonNavigation : MonoBehaviour
     [SerializeField, Label("終了")]
     public Button m_EndButton;
 
+    [SerializeField, Label("操作画面のボタン")]
+    public Button m_OpOFFButton;
     [SerializeField, Label("終了しない")]
     public Button m_OFFButton;
     [SerializeField, Label("終了する")]
@@ -44,17 +46,23 @@ public class GameButtonNavigation : MonoBehaviour
         // コントローラー
         m_State = GetComponent<ControllerState>();
 
+        //=============================================
         // ボタンリストを初期化
         buttons = new List<Button> { m_StartButton, m_BookButton, m_OperationButton, m_TitleButton, m_EndButton };
 
         // 最初のボタンにフォーカスを当てる
         currentIndex = 0;
-        buttons[currentIndex].Select();
+        buttons[currentIndex].Select();   
+        //=============================================
 
+        // ボタンクリック時
         m_StartButton.onClick.AddListener(MenuClose);
         m_EndButton.onClick.AddListener(OnEnd_ONButtonClick);
+        m_OperationButton.onClick.AddListener(OperationOpen);
         //m_ONButton.onClick.AddListener(OnEnd_ONButtonClick);
         m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
+
+        m_OpOFFButton.onClick.AddListener(OperationClose);
 
     }
 
@@ -90,14 +98,40 @@ public class GameButtonNavigation : MonoBehaviour
         canvas.SetActive(false);
     }
 
-    // 操作画面を開く/閉じる
-    public void OperationSelect()
+    // 操作画面を開く
+    public void OperationOpen()
     {
         // currentPanelを非表示
         currentPanel.SetActive(false);
 
-        // Panel_Button_3を表示
+        // Panel_Button_4を表示
         Panel_Button_4.SetActive(true);
+
+        // 操作画面内の最初のボタンにフォーカスを移動
+        Button firstButton = Panel_Button_4.GetComponentInChildren<Button>();
+        if (firstButton != null)
+        {
+            firstButton.Select();
+        }
+    }
+
+    //操作画面を閉じる
+    public void OperationClose()
+    {
+        Panel_Button_4.SetActive(false);
+
+        currentPanel.SetActive(true);
+
+        // メインパネルの最初のボタンにフォーカスを戻す
+        if (currentPanel != null)
+        {
+            Button mainFirstButton = currentPanel.GetComponentInChildren<Button>();
+            if (mainFirstButton != null)
+            {
+                mainFirstButton.Select();
+            }
+        }
+
     }
 
     // 終了ボタン処理
