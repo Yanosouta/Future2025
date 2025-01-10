@@ -41,5 +41,9 @@ public class KapinputMG : MonoBehaviour
             inputKapiName.UpdateDisplayedName();
         }
     }
-
+    public void HandleEndEdit()
+    {
+        // フォーカスを解除（選択状態も解除される）
+        EventSystem.current.SetSelectedGameObject(null);
+    }
 }
