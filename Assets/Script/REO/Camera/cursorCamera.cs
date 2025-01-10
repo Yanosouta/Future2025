@@ -101,46 +101,6 @@ public class cursorCamera : MonoBehaviour
         cursor.transform.position = cursorPosition;
     }
 
-    //void SelectObjectUnderCursor()
-    //{
-    //    // カーソル位置からレイを飛ばしてオブジェクトを選択
-    //    Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-    //    ray.origin += Vector3.left * 1.0f + Vector3.up * 1.3f; // レイの発射位置を左に調整し、上に移動
-
-    //    Vector3 boxHalfExtents = new Vector3(1.0f, 1.0f, 1.0f); // BoxCastの半径
-    //    RaycastHit hit;
-
-    //    // デバッグ描画
-    //    Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green);
-
-    //    if (Physics.BoxCast(ray.origin, boxHalfExtents, ray.direction, out hit, Quaternion.identity, 10000f))
-    //    {
-    //        // ヒットしたコライダーがカプセルコライダーかどうか確認
-    //        if (hit.collider is CapsuleCollider)
-    //        {
-    //            if (hit.collider.gameObject.CompareTag("KAPIBARA"))
-    //            {
-    //                selectedObject = hit.collider.gameObject;
-    //                Debug.Log("KAPIBARAタグのカプセルコライダーを選択しました: " + selectedObject.name);
-    //            }
-    //            else
-    //            {
-    //                selectedObject = null;
-    //                Debug.Log("カプセルコライダーだがKAPIBARAタグがありません: " + hit.collider.gameObject.name);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            selectedObject = null;
-    //            Debug.Log("カプセルコライダーではありません: " + hit.collider.gameObject.name);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        selectedObject = null;
-    //        Debug.Log("何も選択されていません");
-    //    }
-    //}
 
     void SelectObjectUnderCursor()
     {
@@ -204,39 +164,57 @@ public class cursorCamera : MonoBehaviour
 
     void MoveCameraToSelectedObject()
     {
-        // selectedObject が null でなく、「KAPIBARA」タグが付いたオブジェクトの場合のみ移動
         if (selectedObject != null && selectedObject.CompareTag("KAPIBARA"))
         {
+            // MCameraのGetCursorCameraを使用してターゲットを更新
             m_Camera.GetCursorCamera(selectedObject);
 
+            // カメラを即座に移動
+            Vector3 targetPosition = selectedObject.transform.position - (selectedObject.transform.forward * cameraDistance);
+            mainCamera.transform.position = targetPosition;
+            mainCamera.transform.LookAt(selectedObject.transform.position);
 
+            // カーソルを非表示にして操作を無効化
+            DisableCursorControl();
 
-
-            StartCoroutine(MoveCameraCoroutine());
+            selectedObject = null; // 選択解除
         }
     }
 
-    IEnumerator MoveCameraCoroutine()
-    {
-        Vector3 startPosition = mainCamera.transform.position;
-        Vector3 direction = (mainCamera.transform.position - selectedObject.transform.position).normalized;
-        Vector3 targetPosition = selectedObject.transform.position + direction * cameraDistance;
 
-        float elapsedTime = 0f;
-        float duration = 5f; // 5秒間かけて移動
-
-        while (elapsedTime < duration)
-        {
-            mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-            mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを注視
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        mainCamera.transform.position = targetPosition; // 最終位置を確実に設定
-
-        selectedObject = null;
-    }
+    //IEnumerator MoveCameraCoroutine()
+    //{
+    //    Vector3 startPosition = mainCamera.transform.position;
+    //    Vector3 direction = (mainCamera.transform.position - selectedObject.transform.position).normalized;
+    //    Vector3 targetPosition = selectedObject.transform.position + direction * cameraDistance;
+    //
+    //    float elapsedTime = 0f;
+    //    float duration = 5f; // 5秒間かけて移動
+    //
+    //    //while (elapsedTime < duration)
+    //    //{
+    //    //    mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+    //    //    mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを注視
+    //    //    elapsedTime += Time.deltaTime;
+    //    //    yield return null;
+    //    //}
+    //    Quaternion startRotation = mainCamera.transform.rotation;
+    //    Quaternion targetRotation = Quaternion.LookRotation(selectedObject.transform.position - mainCamera.transform.position);
+    //
+    //    while (elapsedTime < duration)
+    //    {
+    //        mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime);
+    //        mainCamera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime);
+    //        elapsedTime += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    mainCamera.transform.position = targetPosition;
+    //    mainCamera.transform.rotation = targetRotation;
+    //
+    //    //mainCamera.transform.position = targetPosition; // 最終位置を確実に設定
+    //
+    //    selectedObject = null;
+    //}
 
     void DisableCursorControl()
     {
@@ -245,17 +223,4 @@ public class cursorCamera : MonoBehaviour
         cursor.SetActive(false);
         isCursorEnabled = false; // カーソルの操作を無効にする
     }
-
-    //void OnDrawGizmos()
-    //{
-    //    if (Camera.main != null)
-    //    {
-    //        // カーソル位置からレイを飛ばして描画
-    //        Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-    //
-    //        // レイの始点と向きに基づいてGizmoのラインを描画
-    //        Gizmos.color = Color.red;
-    //        Gizmos.DrawRay(ray.origin, ray.direction * 100f);
-    //    }
-    //}
 }
