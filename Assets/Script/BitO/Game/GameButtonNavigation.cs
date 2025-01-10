@@ -99,7 +99,7 @@ public class GameButtonNavigation : MonoBehaviour
     {
         // currentPanel‚ğ”ñ•\¦
         Time.timeScale = 1.0f; // ƒQ[ƒ€ŠÔ‚ğÄŠJ
-        BookPanel.SetActive(false);
+
         canvas.SetActive(false);
     }
 
