@@ -68,7 +68,7 @@ public class SerectKapi : MonoBehaviour
 
         int PageNum = 0;
         //→
-        if (m_Stick.x > 0.1f && !m_StickFlg)
+        if (-m_Stick.x > 0.1f && !m_StickFlg)
         {
             PageNum = KapiNum.GetKapiPage();
             //選択カピの変更
@@ -83,7 +83,7 @@ public class SerectKapi : MonoBehaviour
             m_StickFlg = true;
         }
         //←
-        if (m_Stick.x < -0.1f && !m_StickFlg)
+        if (-m_Stick.x < -0.1f && !m_StickFlg)
         {
             PageNum = KapiNum.GetKapiPage();
             //選択カピの変更
