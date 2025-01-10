@@ -72,6 +72,9 @@ public class DayController : DayWeatherManager
 
         transform.rotation = Quaternion.Euler(new Vector3(currentAngle, 0, 0));
 
+        //過去の時間を記憶
+        beforeTimeOfDay = currentTimeOfDay;
+
         //毎時15度回転 //日の出が0度(6時)  //真昼が90度(12時)  //日の入りが180度(18時)
         if (currentAngle > 0.0f && currentAngle < 60.0f)
         {//6~10
@@ -94,10 +97,27 @@ public class DayController : DayWeatherManager
             UpdateEnvironment();
         }
 
-        //夜の間だけひかりのつよさを調整
-        if(currentTimeOfDay == TimeOfDay.Night)
+
+        //天気を考慮 
+        switch (currentWeather)
         {
-            DirectionLight.intensity = 0.2f;
+            case Weather.Sunny:
+                DirectionLight.intensity = defIntensity * DecayRateIntencity[0];
+                break;
+            case Weather.Cloudy:
+                DirectionLight.intensity = defIntensity * DecayRateIntencity[1];
+                break;
+            case Weather.Rainy:
+                DirectionLight.intensity = defIntensity * DecayRateIntencity[2];
+                break;
+        }
+
+
+        //夜の間だけひかりのつよさを調整
+        if (currentTimeOfDay == TimeOfDay.Night)
+        {
+            DirectionLight.intensity = 0.1f;
+            Debug.Log(DirectionLight.intensity);
         }
         else
         {
@@ -115,22 +135,6 @@ public class DayController : DayWeatherManager
                 sunColor.b -= lightShaft.SubtractionSpeed;
         }
         else sunColor = lightShaft.retentionColor;
-
-
-
-        //天気を考慮 
-        switch (currentWeather)
-        {
-            case Weather.Sunny:
-                DirectionLight.intensity = defIntensity * DecayRateIntencity[0];
-                break;
-            case Weather.Cloudy:
-                DirectionLight.intensity = defIntensity * DecayRateIntencity[1];
-                break;
-            case Weather.Rainy:
-                DirectionLight.intensity = defIntensity * DecayRateIntencity[2];
-                break;
-        }
 
 
         //**********コマンド***********
