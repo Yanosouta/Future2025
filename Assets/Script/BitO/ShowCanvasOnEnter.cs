@@ -48,7 +48,7 @@ public class ShowCanvasOnEnter : MonoBehaviour
 
     private void TogglePause()
     {
-        if (canvas != null && panels.Length == 4) // パネルが3つ登録されている場合
+        if (canvas != null && panels.Length == 4) // パネルが4つ登録されている場合
         {
             // 現在のアクティブ状態を反転させる
             isActive = canvas.activeSelf;
@@ -66,7 +66,7 @@ public class ShowCanvasOnEnter : MonoBehaviour
                 panels[0].SetActive(true); // 1つ目のパネルを表示
                 panels[1].SetActive(false); // 2つ目を非表示
                 panels[2].SetActive(false); // 3つ目を非表示
-                panels[3].SetActive(false); // 3つ目を非表示
+                panels[3].SetActive(false); // 4つ目を非表示
 
                 // フォーカスを最初のボタンに設定
                 SetButtonFocus(firstButton);
