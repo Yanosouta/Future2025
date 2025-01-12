@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameButtonNavigation : MonoBehaviour
@@ -19,14 +20,14 @@ public class GameButtonNavigation : MonoBehaviour
     [SerializeField, Label("終了")]
     public Button m_EndButton;
 
-    [SerializeField, Label("操作画面のボタン")]
-    public Button m_OpOFFButton;
+    //[SerializeField, Label("操作画面のボタン")]
+    //public Button m_OpOFFButton;
     [SerializeField, Label("図鑑画面のボタン")]
     public Button m_OpOFFBookButton;
-    [SerializeField, Label("終了しない")]
-    public Button m_OFFButton;
-    [SerializeField, Label("終了する")]
-    public Button m_ONButton;
+    //[SerializeField, Label("終了しない")]
+    //public Button m_OFFButton;
+    //[SerializeField, Label("終了する")]
+    //public Button m_ONButton;
 
     private List<Button> buttons; // ボタンリスト
     private int currentIndex = 0; // 現在のフォーカス位置
@@ -64,9 +65,9 @@ public class GameButtonNavigation : MonoBehaviour
         m_EndButton.onClick.AddListener(OnEnd_ONButtonClick);
         m_OperationButton.onClick.AddListener(OperationOpen);
         //m_ONButton.onClick.AddListener(OnEnd_ONButtonClick);
-        m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
+        //m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
 
-        m_OpOFFButton.onClick.AddListener(OperationClose);
+        //m_OpOFFButton.onClick.AddListener(OperationClose);
         m_BookButton.onClick.AddListener(OpenBook);
         m_OpOFFBookButton.onClick.AddListener(CloseBook);
     }
@@ -82,6 +83,7 @@ public class GameButtonNavigation : MonoBehaviour
         {
             MoveFocus(1); // 下キーでフォーカスを移動
         }
+
     }
 
     // フォーカス移動ロジック
@@ -103,6 +105,23 @@ public class GameButtonNavigation : MonoBehaviour
         canvas.SetActive(false);
     }
 
+    // パネルを開く際のフォーカス処理メソッド
+    //private void FocusOnPanelButton(GameObject panel)
+    //{
+    //    if (panel != null)
+    //    {
+    //        Button firstButton = panel.GetComponentInChildren<Button>();
+    //        if (firstButton != null)
+    //        {
+    //            EventSystem.current.SetSelectedGameObject(firstButton.gameObject); // フォーカス移動
+    //        }
+    //        else
+    //        {
+    //            Debug.Log($"フォーカスするボタンが {panel.name} に見つかりませんでした。");
+    //        }
+    //    }
+    //}
+
     // 操作画面を開く
     public void OperationOpen()
     {
@@ -112,55 +131,36 @@ public class GameButtonNavigation : MonoBehaviour
         // Panel_Button_4を表示
         Panel_Button_4.SetActive(true);
 
-        // 操作画面内の最初のボタンにフォーカスを移動
-        Button firstButton = Panel_Button_4.GetComponentInChildren<Button>();
-        if (firstButton != null)
-        {
-            firstButton.Select();
-        }
+        //FocusOnPanelButton(Panel_Button_4);
     }
 
     //操作画面を閉じる
-    public void OperationClose()
-    {
-        Panel_Button_4.SetActive(false);
+    //public void OperationClose()
+    //{
+    //    Panel_Button_4.SetActive(false);
 
-        currentPanel.SetActive(true);
+    //    currentPanel.SetActive(true);
 
-        // メインパネルの最初のボタンにフォーカスを戻す
-        if (currentPanel != null)
-        {
-            Button mainFirstButton = currentPanel.GetComponentInChildren<Button>();
-            if (mainFirstButton != null)
-            {
-                mainFirstButton.Select();
-            }
-        }
-
-    }
+    //    //FocusOnPanelButton(currentPanel);
+    //}
 
     // 終了ボタン処理
-    void OnEndButtonClick()
-    {
-        // 現在のパネルを非表示
-        if (currentPanel != null)
-        {
-            currentPanel.SetActive(false);
-        }
+    //void OnEndButtonClick()
+    //{
+    //    // 現在のパネルを非表示
+    //    if (currentPanel != null)
+    //    {
+    //        currentPanel.SetActive(false);
+    //    }
 
-        // ターゲットパネルを表示
-        if (targetPanel != null)
-        {
-            targetPanel.SetActive(true);
+    //    // ターゲットパネルを表示
+    //    if (targetPanel != null)
+    //    {
+    //        targetPanel.SetActive(true);
 
-            // ターゲットパネル内の最初のボタンにフォーカスを移動
-            Button targetButton = targetPanel.GetComponentInChildren<Button>();
-            if (targetButton != null)
-            {
-                targetButton.Select();
-            }
-        }
-    }
+    //        //FocusOnPanelButton(targetPanel);
+    //    }
+    //}
 
     void OnEnd_ONButtonClick()
     {
@@ -184,12 +184,7 @@ public class GameButtonNavigation : MonoBehaviour
         {
             currentPanel.SetActive(true);
 
-            // ターゲットパネル内の最初のボタンにフォーカスを移動
-            Button currentButton = currentPanel.GetComponentInChildren<Button>();
-            if (currentButton != null)
-            {
-                currentButton.Select();
-            }
+            //FocusOnPanelButton(currentPanel);
         }
     }
     void OpenBook()
@@ -200,12 +195,7 @@ public class GameButtonNavigation : MonoBehaviour
         // Panel_Button_4を表示
         BookPanel.SetActive(true);
 
-        // 操作画面内の最初のボタンにフォーカスを移動
-        Button firstButton = BookPanel.GetComponentInChildren<Button>();
-        if (firstButton != null)
-        {
-            firstButton.Select();
-        }
+       // FocusOnPanelButton(BookPanel);
     }
     void CloseBook() 
     {
@@ -216,11 +206,7 @@ public class GameButtonNavigation : MonoBehaviour
         // メインパネルの最初のボタンにフォーカスを戻す
         if (currentPanel != null)
         {
-            Button mainFirstButton = currentPanel.GetComponentInChildren<Button>();
-            if (mainFirstButton != null)
-            {
-                mainFirstButton.Select();
-            }
+           // FocusOnPanelButton(currentPanel);
         }
     }
 }
