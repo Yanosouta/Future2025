@@ -10,7 +10,8 @@ public class DebugKapiSpawn : MonoBehaviour
 
     public float minScale = 0.5f; // 最小スケール（インスペクターで設定可能）
     public float maxScale = 2f;  // 最大スケール（インスペクターで設定可能）
-
+    KapiDicData KapiData;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,11 @@ public class DebugKapiSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(DebugFeed.DebugFlg)
+        if (KapiData == null)
+            KapiData = FindObjectOfType<KapiDicData>();
+        
+
+        if (DebugFeed.DebugFlg)
         {
             if (Input.GetKeyDown(KeyCode.K))
             {
@@ -69,5 +74,14 @@ public class DebugKapiSpawn : MonoBehaviour
 
         // 使用したPrefabをリストから削除
         availablePrefabs.RemoveAt(randomIndex);
+
+        // 生成したオブジェクトのIdを参照
+        KapiID kapiID = spawnedObject.GetComponent<KapiID>();
+        if(kapiID != null)
+        {
+            Debug.Log("すぽおおおおおおおおおおおおおんID:" + kapiID.KapiId);
+        }
+
+        KapiData.MarkAsKapi(kapiID.KapiId);
     }
 }
