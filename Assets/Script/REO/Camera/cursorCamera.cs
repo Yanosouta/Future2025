@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
 
-public class cursorCamera : MonoBehaviour
+public class CursorCameraController : MonoBehaviour
 {
     ControllerState m_State;
     ControllerBase m_Stick;
@@ -12,75 +11,62 @@ public class cursorCamera : MonoBehaviour
     public float cursorSpeed = 100f; // カーソルの移動速度
     public GameObject mainCamera; // メインカメラ
     public float cameraDistance = 2f; // オブジェクトの目の前の距離
+    private GameObject selectedObject = null; // 選択されたオブジェクト
+    private bool wasBButtonPressed = false; // 前フレームのBボタンの状態を記録
 
     private bool isCursorVisible = false;
-    private bool isCursorEnabled = true; // カーソルの操作を有効にするかどうかのフラグ
     private Vector2 cursorPosition;
-    private GameObject selectedObject = null; // 選択されたオブジェクト
 
     private GameObject ParentObj;
+
     void Start()
     {
-        cursor.SetActive(false); // ゲーム開始時はカーソルを非表示に
-        cursorPosition = new Vector2(Screen.width / 2, Screen.height / 2); // カーソルの初期位置を画面中央に設定
-                                                                           // cursorが設定されているか確認
-        m_Stick = GetComponent<ControllerBase>();
-
+        // カーソルを画面中央に配置
+        cursorPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+        if (cursor != null)
+        {
+            cursor.transform.position = cursorPosition;
+            cursor.SetActive(false); // 初期状態で非表示
+        }
+        else
+        {
+            Debug.LogError("Cursor が設定されていません！");
+        }
         ParentObj = mainCamera.transform.root.gameObject;
         m_Camera = ParentObj.GetComponent<MCamera>();
         m_State = ParentObj.GetComponent<ControllerState>();
+
     }
 
     void Update()
     {
-        if (mainCamera == null)
+        // ゲームパッドが接続されているか確認
+        if (Gamepad.current == null)
         {
-            Debug.LogError("mainCamera が設定されていません！");
+            Debug.LogWarning("ゲームパッドが接続されていません！");
+            return;
         }
 
-        if (cursor == null)
-        {
-            Debug.LogError("cursor が設定されていません！");
-        }
+        bool isBButtonPressed = m_State.GetButtonB(); // Bボタンの現在の状態
 
-        // ゲームパッドのBボタンが押されたらカーソルの表示・非表示を切り替える
-        if (Gamepad.current != null && m_State.GetButtonB() || Keyboard.current.spaceKey.wasPressedThisFrame)
+        // Bボタンでカーソルの表示・非表示を切り替え
+        if (isBButtonPressed && !wasBButtonPressed) // Bボタン
         {
             isCursorVisible = !isCursorVisible;
             cursor.SetActive(isCursorVisible);
-            isCursorEnabled = true;
         }
 
+        wasBButtonPressed = isBButtonPressed; // Bボタンの状態を更新
+
         // カーソルが表示されている場合、左スティックで移動
-        if (isCursorEnabled && isCursorVisible)
+        if (isCursorVisible)
         {
-            Vector2 leftStickInput = Vector2.zero;
-
-            if (Gamepad.current != null)
-            {
-                leftStickInput = m_Stick.GetStick();
-            }
-
-            // キーボードのWASD入力
-            if (Keyboard.current != null)
-            {
-                if (m_State.GetButtonUp())
-                    leftStickInput.y += 1;
-                if (m_State.GetButtonDown())
-                    leftStickInput.y -= 1;
-                if (m_State.GetButtonLeft())
-                    leftStickInput.x -= 1;
-                if (m_State.GetButtonRight())
-                    leftStickInput.x += 1;
-            }
-
+            Vector2 leftStickInput = Gamepad.current.leftStick.ReadValue();
             MoveCursor(leftStickInput);
-
             // ここでカーソルの位置に基づいてレイを更新
             SelectObjectUnderCursor();
-
             // AボタンまたはEnterキーが押された場合、カメラを選択されたオブジェクトの前に移動
-            if (selectedObject != null && (isCursorEnabled && Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.enterKey.wasPressedThisFrame))
+            if (selectedObject != null && m_State.GetButtonA())
             {
                 MoveCameraToSelectedObject();
                 DisableCursorControl(); // カーソル操作を無効にする
@@ -100,7 +86,6 @@ public class cursorCamera : MonoBehaviour
         // カーソルの位置をUIオブジェクトに反映
         cursor.transform.position = cursorPosition;
     }
-
 
     void SelectObjectUnderCursor()
     {
@@ -158,10 +143,6 @@ public class cursorCamera : MonoBehaviour
         }
     }
 
-
-
-
-
     void MoveCameraToSelectedObject()
     {
         if (selectedObject != null && selectedObject.CompareTag("KAPIBARA"))
@@ -181,46 +162,177 @@ public class cursorCamera : MonoBehaviour
         }
     }
 
-
-    //IEnumerator MoveCameraCoroutine()
-    //{
-    //    Vector3 startPosition = mainCamera.transform.position;
-    //    Vector3 direction = (mainCamera.transform.position - selectedObject.transform.position).normalized;
-    //    Vector3 targetPosition = selectedObject.transform.position + direction * cameraDistance;
-    //
-    //    float elapsedTime = 0f;
-    //    float duration = 5f; // 5秒間かけて移動
-    //
-    //    //while (elapsedTime < duration)
-    //    //{
-    //    //    mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-    //    //    mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを注視
-    //    //    elapsedTime += Time.deltaTime;
-    //    //    yield return null;
-    //    //}
-    //    Quaternion startRotation = mainCamera.transform.rotation;
-    //    Quaternion targetRotation = Quaternion.LookRotation(selectedObject.transform.position - mainCamera.transform.position);
-    //
-    //    while (elapsedTime < duration)
-    //    {
-    //        mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime);
-    //        mainCamera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime);
-    //        elapsedTime += Time.deltaTime;
-    //        yield return null;
-    //    }
-    //    mainCamera.transform.position = targetPosition;
-    //    mainCamera.transform.rotation = targetRotation;
-    //
-    //    //mainCamera.transform.position = targetPosition; // 最終位置を確実に設定
-    //
-    //    selectedObject = null;
-    //}
-
     void DisableCursorControl()
     {
         // カーソルを非表示にして操作を無効化
         isCursorVisible = false;
         cursor.SetActive(false);
-        isCursorEnabled = false; // カーソルの操作を無効にする
     }
 }
+
+//using UnityEngine;
+//using UnityEngine.InputSystem;
+//using System.Collections;
+
+//public class cursorCamera : MonoBehaviour
+//{
+//    ControllerState m_State;
+//    ControllerBase m_Stick;
+//    MCamera m_Camera;
+
+//    public GameObject cursor; // カーソルとして使用するUIオブジェクト
+//    public float cursorSpeed = 100f; // カーソルの移動速度
+//    public GameObject mainCamera; // メインカメラ
+//    public float cameraDistance = 2f; // オブジェクトの目の前の距離
+
+//    private bool isCursorVisible = false;
+//    private bool isCursorEnabled = true; // カーソルの操作を有効にするかどうかのフラグ
+//    private Vector2 cursorPosition;
+//    private GameObject selectedObject = null; // 選択されたオブジェクト
+
+//    private GameObject ParentObj;
+//    void Start()
+//    {
+//        cursor.SetActive(false); // ゲーム開始時はカーソルを非表示に
+//        cursorPosition = new Vector2(Screen.width / 2, Screen.height / 2); // カーソルの初期位置を画面中央に設定
+//                                                                           // cursorが設定されているか確認
+//        m_Stick = GetComponent<ControllerBase>();
+
+//        ParentObj = mainCamera.transform.root.gameObject;
+//        m_Camera = ParentObj.GetComponent<MCamera>();
+//        m_State = ParentObj.GetComponent<ControllerState>();
+//    }
+
+//    void Update()
+//    {
+//        if (mainCamera == null)
+//        {
+//            Debug.LogError("mainCamera が設定されていません！");
+//        }
+
+//        if (cursor == null)
+//        {
+//            Debug.LogError("cursor が設定されていません！");
+//        }
+
+//        // ゲームパッドのBボタンが押されたらカーソルの表示・非表示を切り替える
+//        if (m_State.GetButtonB())//|| Keyboard.current.spaceKey.wasPressedThisFrame)
+//        {
+//            isCursorVisible = !isCursorVisible;
+//            cursor.SetActive(isCursorVisible);
+//            isCursorEnabled = true;
+//        }
+
+//        // カーソルが表示されている場合、左スティックで移動
+//        if (isCursorEnabled && isCursorVisible)
+//        {
+//            Vector2 leftStickInput = Vector2.zero;
+
+//            if (Gamepad.current != null)
+//            {
+//                leftStickInput = m_Stick.GetStick();
+//            }
+
+//            // キーボードのWASD入力
+//            if (Keyboard.current != null)
+//            {
+//                if (m_State.GetButtonUp())
+//                    leftStickInput.y += 1;
+//                if (m_State.GetButtonDown())
+//                    leftStickInput.y -= 1;
+//                if (m_State.GetButtonLeft())
+//                    leftStickInput.x -= 1;
+//                if (m_State.GetButtonRight())
+//                    leftStickInput.x += 1;
+//            }
+
+//            MoveCursor(leftStickInput);
+
+//            // ここでカーソルの位置に基づいてレイを更新
+//            SelectObjectUnderCursor();
+
+//            // AボタンまたはEnterキーが押された場合、カメラを選択されたオブジェクトの前に移動
+//            if (selectedObject != null && (isCursorEnabled && Gamepad.current != null && m_State.GetButtonA() || Keyboard.current.enterKey.wasPressedThisFrame))
+//            {
+//                MoveCameraToSelectedObject();
+//                DisableCursorControl(); // カーソル操作を無効にする
+//            }
+//        }
+//    }
+
+//    void MoveCursor(Vector2 leftStickInput)
+//    {
+//        // 左スティックの入力に応じてカーソルを移動
+//        cursorPosition += leftStickInput * cursorSpeed * Time.deltaTime;
+
+//        // 画面の境界内にカーソルを制限
+//        cursorPosition.x = Mathf.Clamp(cursorPosition.x, 0, Screen.width);
+//        cursorPosition.y = Mathf.Clamp(cursorPosition.y, 0, Screen.height);
+
+//        // カーソルの位置をUIオブジェクトに反映
+//        cursor.transform.position = cursorPosition;
+//    }
+
+
+//    void MoveCameraToSelectedObject()
+//    {
+//        if (selectedObject != null && selectedObject.CompareTag("KAPIBARA"))
+//        {
+//            // MCameraのGetCursorCameraを使用してターゲットを更新
+//            m_Camera.GetCursorCamera(selectedObject);
+
+//            // カメラを即座に移動
+//            Vector3 targetPosition = selectedObject.transform.position - (selectedObject.transform.forward * cameraDistance);
+//            mainCamera.transform.position = targetPosition;
+//            mainCamera.transform.LookAt(selectedObject.transform.position);
+
+//            // カーソルを非表示にして操作を無効化
+//            DisableCursorControl();
+
+//            selectedObject = null; // 選択解除
+//        }
+//    }
+
+
+//    //IEnumerator MoveCameraCoroutine()
+//    //{
+//    //    Vector3 startPosition = mainCamera.transform.position;
+//    //    Vector3 direction = (mainCamera.transform.position - selectedObject.transform.position).normalized;
+//    //    Vector3 targetPosition = selectedObject.transform.position + direction * cameraDistance;
+//    //
+//    //    float elapsedTime = 0f;
+//    //    float duration = 5f; // 5秒間かけて移動
+//    //
+//    //    //while (elapsedTime < duration)
+//    //    //{
+//    //    //    mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+//    //    //    mainCamera.transform.LookAt(selectedObject.transform.position); // オブジェクトを注視
+//    //    //    elapsedTime += Time.deltaTime;
+//    //    //    yield return null;
+//    //    //}
+//    //    Quaternion startRotation = mainCamera.transform.rotation;
+//    //    Quaternion targetRotation = Quaternion.LookRotation(selectedObject.transform.position - mainCamera.transform.position);
+//    //
+//    //    while (elapsedTime < duration)
+//    //    {
+//    //        mainCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime);
+//    //        mainCamera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime);
+//    //        elapsedTime += Time.deltaTime;
+//    //        yield return null;
+//    //    }
+//    //    mainCamera.transform.position = targetPosition;
+//    //    mainCamera.transform.rotation = targetRotation;
+//    //
+//    //    //mainCamera.transform.position = targetPosition; // 最終位置を確実に設定
+//    //
+//    //    selectedObject = null;
+//    //}
+
+//    void DisableCursorControl()
+//    {
+//        // カーソルを非表示にして操作を無効化
+//        isCursorVisible = false;
+//        cursor.SetActive(false);
+//        isCursorEnabled = false; // カーソルの操作を無効にする
+//    }
+//}
