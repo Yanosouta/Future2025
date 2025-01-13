@@ -13,6 +13,7 @@ public class FadeController : MonoBehaviour
     public float fadeDuration = 1.0f;
 
     private Button[] buttons;
+    public bool isFading = false; // フェード中かどうかを示すフラグ
 
     private void Start()
     {
@@ -34,6 +35,7 @@ public class FadeController : MonoBehaviour
     // フェードイン処理
     public IEnumerator FadeIn()
     {
+        isFading = true; // フェード開始
         SetButtonsInteractable(false); // フェード完了後にボタンを有効化
 
         float timer = 0;
@@ -51,11 +53,13 @@ public class FadeController : MonoBehaviour
         fadeImage.color = color; // 完全に透明に
 
         SetButtonsInteractable(true); // フェード完了後にボタンを有効化
+        isFading = false; // フェード終了
     }
 
     // フェードアウト処理とシーン遷移
     public IEnumerator FadeOutAndChangeScene(string sceneName)
     {
+        isFading = true; // フェード開始
         SetButtonsInteractable(false); // フェード中はボタンを無効化
 
         float timer = 0;
@@ -74,5 +78,6 @@ public class FadeController : MonoBehaviour
 
         // フェードアウトが完了したらシーン遷移
         SceneManager.LoadScene(sceneName);
+        isFading = false; // フェード終了
     }
 }
