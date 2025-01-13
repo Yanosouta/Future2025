@@ -501,7 +501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9ed3a2cbee06b43b12b2e3b8838be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KapiId: 3
+  KapiId: 1
   KapiName: 
   textComponent: {fileID: 0}
 --- !u!4 &7597887777507832635 stripped
