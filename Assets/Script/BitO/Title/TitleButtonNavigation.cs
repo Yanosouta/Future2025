@@ -18,7 +18,8 @@ public class TitleButtonNavigation : MonoBehaviour
     public Button m_OFFButton;
     [SerializeField, Label("終了する")]
     public Button m_ONButton;
-
+    [SerializeField, Label("図鑑画面のボタン")]
+    public Button m_OpOFFBookButton;
     private List<Button> buttons; // ボタンリスト
     private int currentIndex = 0; // 現在のフォーカス位置
 
@@ -27,7 +28,8 @@ public class TitleButtonNavigation : MonoBehaviour
     public GameObject currentPanel;
     [SerializeField, Label("終了用のパネル")]
     public GameObject targetPanel;
-
+    [SerializeField, Label("図鑑のパネル")]
+    public GameObject BookPanel;
     // コントローラーもの
     ControllerState m_State;
 
@@ -58,6 +60,9 @@ public class TitleButtonNavigation : MonoBehaviour
         m_EndButton.onClick.AddListener(OnEndButtonClick);
         m_ONButton.onClick.AddListener(OnEnd_ONButtonClick);
         m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
+
+        m_BookButton.onClick.AddListener(OpenBook);
+        m_OpOFFBookButton.onClick.AddListener(CloseBook);
     }
 
     void Update()
@@ -135,6 +140,28 @@ public class TitleButtonNavigation : MonoBehaviour
             {
                 currentButton.Select();
             }
+        }
+    }
+    void OpenBook()
+    {
+        // currentPanelを非表示
+        currentPanel.SetActive(false);
+
+        // Panel_Button_4を表示
+        BookPanel.SetActive(true);
+
+        // FocusOnPanelButton(BookPanel);
+    }
+    void CloseBook()
+    {
+        BookPanel.SetActive(false);
+
+        currentPanel.SetActive(true);
+
+        // メインパネルの最初のボタンにフォーカスを戻す
+        if (currentPanel != null)
+        {
+            // FocusOnPanelButton(currentPanel);
         }
     }
 }

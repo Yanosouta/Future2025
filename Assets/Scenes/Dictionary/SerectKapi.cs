@@ -65,7 +65,7 @@ public class SerectKapi : MonoBehaviour
             Nadukeoya = FindObjectOfType<KapinputMG>();
         }
 
-
+        Debug.Log(m_Stick);
         int PageNum = 0;
         //¨
         if (-m_Stick.x > 0.1f && !m_StickFlg)
