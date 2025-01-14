@@ -497,23 +497,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imageSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1064290290}
+  - {fileID: 1718878279}
+  - {fileID: 1257082359}
+  - {fileID: 1548432633}
+  - {fileID: 1931559316}
+  - {fileID: 2032574195}
+  - {fileID: 752138704}
+  - {fileID: 779208212}
   images:
-  - {fileID: 21300000, guid: d084b7f9f367843499747cfbbbec46f9, type: 3}
-  - {fileID: 21300000, guid: b0006d52fce93114885acd0973b30358, type: 3}
   - {fileID: 21300000, guid: d49c7dd86bb88694dbae38842edb45a3, type: 3}
-  - {fileID: 21300000, guid: d084b7f9f367843499747cfbbbec46f9, type: 3}
-  - {fileID: 21300000, guid: d49c7dd86bb88694dbae38842edb45a3, type: 3}
+  - {fileID: 21300000, guid: 11b4f2be64eee414087b97a2c5dc8c1f, type: 3}
   - {fileID: 21300000, guid: b0006d52fce93114885acd0973b30358, type: 3}
-  - {fileID: 21300000, guid: b0006d52fce93114885acd0973b30358, type: 3}
-  - {fileID: 21300000, guid: d49c7dd86bb88694dbae38842edb45a3, type: 3}
+  - {fileID: 21300000, guid: e67229e2fdcfdb342b001e4cf52ad8cd, type: 3}
+  - {fileID: 21300000, guid: 4a8b0e472ce3cc0459de46c7b0de94c1, type: 3}
+  - {fileID: 21300000, guid: d7965cf85eee1224f821f64fdc88f594, type: 3}
+  - {fileID: 21300000, guid: 12ad7651bac776b4da305b4e181f8539, type: 3}
+  - {fileID: 21300000, guid: 767239d073c06b144a1e7dbce0f2b32d, type: 3}
   - {fileID: 21300000, guid: a5231556cc3afd647909f3f0eb0fb9d9, type: 3}
   - {fileID: 21300000, guid: a72447c7074dbea43b909f5ef20a71c3, type: 3}
   - {fileID: 21300000, guid: 9d913327a73c59c4387feceaa2e7a967, type: 3}
