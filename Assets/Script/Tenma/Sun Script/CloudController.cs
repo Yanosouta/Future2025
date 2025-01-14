@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class CloudController : DayWeatherManager
 {
-    public Material mat;
-
-
-    private void Start()
-    {
-        
-    }
-
+    [Header("Horizon")]
+    public GameObject obj;
 
     void Update()
     {
-        //“V‹C–ˆ‚Å‰_‚ğ•Ï‰»
-        switch(GetCurrentWeather())
-        {
+        //‰J‚Ìê‡
+        if (currentWeather == Weather.Rainy)
+            obj.SetActive(true);
 
-        }
+        //‰JˆÈŠO‚Ìê‡
+        else
+            obj.SetActive(false);
     }
 }
