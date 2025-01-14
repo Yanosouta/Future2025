@@ -13,10 +13,10 @@ namespace Es.WaveformProvider.Sample
         [SerializeField, Range(0f, 1f)]
         private float inputScaleFitter = 0.01f;
 
-        [SerializeField, Range(0f, 1f)]
+        [SerializeField, Range(0f, 2f)]
         private float strength = 1f;
 
-        [SerializeField, Range(0f, 5f)]
+        [SerializeField, Range(0f, 10f)]
         private float mass = 3f;
 
         private Vector3 previousPosition;
@@ -29,9 +29,6 @@ namespace Es.WaveformProvider.Sample
 
         private void Update()
         {
-            // 速度を位置の変化から計算する
-            Vector3 displacement = transform.position - previousPosition;
-            velocityMagnitude = displacement.magnitude / Time.deltaTime;
             previousPosition = transform.position;
         }
 
@@ -47,12 +44,20 @@ namespace Es.WaveformProvider.Sample
 
         private void WaveInput(Collision collision)
         {
+            // 現在の位置から速度を計算
+            Vector3 currentPosition = transform.position;
+            Vector3 displacement = currentPosition - previousPosition;
+            float velocityMagnitude = displacement.magnitude / Time.deltaTime;
+
             foreach (var p in collision.contacts)
             {
                 var canvas = p.otherCollider.GetComponent<WaveConductor>();
                 if (canvas != null)
                     canvas.Input(waveform, p.point, velocityMagnitude * mass * inputScaleFitter, strength);
             }
+
+            // 衝突後の位置を再設定
+            previousPosition = currentPosition;
         }
     }
 }
