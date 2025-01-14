@@ -133,6 +133,5 @@ public class GameButtonNavigation : MonoBehaviour
 
         // Panel_Button_4‚ð•\Ž¦
         BookPanel.SetActive(true);
-
     }
 }

@@ -20,6 +20,7 @@ public class TitleButtonNavigation : MonoBehaviour
     public Button m_ONButton;
     [SerializeField, Label("図鑑画面のボタン")]
     public Button m_OpOFFBookButton;
+
     private List<Button> buttons; // ボタンリスト
     private int currentIndex = 0; // 現在のフォーカス位置
 
@@ -49,6 +50,8 @@ public class TitleButtonNavigation : MonoBehaviour
         // コントローラー
         m_State = GetComponent<ControllerState>();
 
+        //=============================================
+        // ボタンについて
         // ボタンリストを初期化
         buttons = new List<Button> { m_StartButton, m_BookButton, m_EndButton };
 
@@ -60,9 +63,9 @@ public class TitleButtonNavigation : MonoBehaviour
         m_EndButton.onClick.AddListener(OnEndButtonClick);
         m_ONButton.onClick.AddListener(OnEnd_ONButtonClick);
         m_OFFButton.onClick.AddListener(OnEnd_OFFButtonClick);
-
         m_BookButton.onClick.AddListener(OpenBook);
         m_OpOFFBookButton.onClick.AddListener(CloseBook);
+        //=============================================
     }
 
     void Update()
@@ -76,6 +79,22 @@ public class TitleButtonNavigation : MonoBehaviour
         else if (m_State.GetButtonDown())
         {
             MoveFocus(1); // 下に移動
+        }
+        if (m_State.GetButtonMenu())
+        {
+            BookPanel.SetActive(false);
+
+            // メインパネルを表示
+            if (currentPanel != null)
+            {
+                currentPanel.SetActive(true);
+            }
+
+            // メインパネルの最初のボタンにフォーカスを移動
+            if (m_StartButton != null)
+            {
+                m_StartButton.Select();
+            }
         }
     }
 
@@ -149,8 +168,6 @@ public class TitleButtonNavigation : MonoBehaviour
 
         // Panel_Button_4を表示
         BookPanel.SetActive(true);
-
-        // FocusOnPanelButton(BookPanel);
     }
     void CloseBook()
     {
@@ -158,10 +175,5 @@ public class TitleButtonNavigation : MonoBehaviour
 
         currentPanel.SetActive(true);
 
-        // メインパネルの最初のボタンにフォーカスを戻す
-        if (currentPanel != null)
-        {
-            // FocusOnPanelButton(currentPanel);
-        }
     }
 }
