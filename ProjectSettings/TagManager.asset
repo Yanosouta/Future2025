@@ -9,6 +9,7 @@ TagManager:
   - Manager
   - Feed
   - DirectionalLight
+  - Water
   layers:
   - Default
   - TransparentFX
