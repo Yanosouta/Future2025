@@ -41,5 +41,10 @@ namespace Es.WaveformProvider.Sample
 				}
 			}
 		}
+
+		public void SetWaitTime(float a)
+        {
+			waitTime = a;
+        }
 	}
 }
