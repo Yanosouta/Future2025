@@ -31,19 +31,19 @@ public class ClickRoButton : MonoBehaviour
             KapiDic = FindObjectOfType<KapiDictionary>();
 
         //ページ移動
-        if (m_State.GetButtonL())
-        {
-            KapiDic.NextPage();
-        }
-        if (m_State.GetButtonR())
-        {
-            KapiDic.PreviousPage();
-        }
-        //昇順降順
-        if (m_State.GetButtonX())
-        {
-            ASortKapi();
-        }
+        //if (m_State.GetButtonL())
+        //{
+        //    KapiDic.NextPage();
+        //}
+        //if (m_State.GetButtonR())
+        //{
+        //    KapiDic.PreviousPage();
+        //}
+        ////昇順降順
+        //if (m_State.GetButtonX())
+        //{
+        //    ASortKapi();
+        //}
         //登録(デバッグ用なのでコントローラ対応不必要)
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
