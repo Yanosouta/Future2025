@@ -16,25 +16,16 @@ public class ShowCanvasOnEnter : MonoBehaviour
     ControllerBase m_Controller;
     ControllerBase.ControllerButton m_Button;
 
-    private FadeController fadeController;
-
     bool isActive = false;
     bool OnOFFFlg = false;
     private void Start()
     {
         m_State = m_camera.GetComponent<ControllerState>();
         m_Controller = m_camera.GetComponent<ControllerBase>();
-
-        fadeController = FindObjectOfType<FadeController>();
     }
 
     void Update()
     {
-        if (fadeController != null && fadeController.isFading) // フェード中は処理を無効化
-        {
-            return;
-        }
-
         m_Button = m_Controller.GetButton();
         // Enterキーが押された場合またはコントローラーのボタンが押された場合
         if (m_State.GetButtonMenu())
