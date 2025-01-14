@@ -61,8 +61,8 @@ public class CursorCameraController : MonoBehaviour
         // カーソルが表示されている場合、左スティックで移動
         if (isCursorVisible)
         {
-            Vector2 leftStickInput = Gamepad.current.leftStick.ReadValue();
-            MoveCursor(leftStickInput);
+            Vector2 dpadInput = Gamepad.current.dpad.ReadValue();
+            MoveCursor(dpadInput);
             // ここでカーソルの位置に基づいてレイを更新
             SelectObjectUnderCursor();
             // AボタンまたはEnterキーが押された場合、カメラを選択されたオブジェクトの前に移動
@@ -74,10 +74,10 @@ public class CursorCameraController : MonoBehaviour
         }
     }
 
-    void MoveCursor(Vector2 leftStickInput)
+    void MoveCursor(Vector2 dpadInput)
     {
         // 左スティックの入力に応じてカーソルを移動
-        cursorPosition += leftStickInput * cursorSpeed * Time.deltaTime;
+        cursorPosition += dpadInput * cursorSpeed * Time.deltaTime;
 
         // 画面の境界内にカーソルを制限
         cursorPosition.x = Mathf.Clamp(cursorPosition.x, 0, Screen.width);
