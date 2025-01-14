@@ -19,12 +19,26 @@ public class WeatherController : DayWeatherManager
         public float weight;     // 確率（重み）
     }
 
+    [Serializable]
+    public class RipplesWeight
+    {
+        public bool OnRain;  //雨かそれ以外か
+        public float waitTime; //雨の間隔
+    }
+
     [Header("天気と時間を表示するUIテキスト")]
     [SerializeField]
     private Text text;
 
     [Header("RainEffect(Obj)")]
     public GameObject rainObj;
+
+    [Header("波紋表現の量 1.雨,2.通常")]
+    public List<RipplesWeight> ripples = new List<RipplesWeight>
+    {
+        new RipplesWeight { OnRain = true, waitTime = 0.1f },
+        new RipplesWeight { OnRain = false, waitTime = 1f }
+    };
 
     [Header("天気ごとの確率")]
     public List<WeatherWeight> weatherWeights = new List<WeatherWeight>
@@ -34,8 +48,8 @@ public class WeatherController : DayWeatherManager
         new WeatherWeight { weather = Weather.Rainy, weight = 20.0f }
     };
 
-    private TimeOfDay beforeTimeOfDay;
     private MeshRenderer mesh;
+    private Es.WaveformProvider.Sample.RandomWaveInput RandomInput;
 
     public static new WeatherController instance;
 
@@ -68,23 +82,42 @@ public class WeatherController : DayWeatherManager
 
     void Start()
     {
-        beforeTimeOfDay = currentTimeOfDay;
         mesh = rainObj.GetComponent<MeshRenderer>();
+        RandomInput = rainObj.GetComponent<Es.WaveformProvider.Sample.RandomWaveInput>();
+
+        if(RandomInput == null)
+        {
+            Debug.Log("RandomInput 参照エラー");
+        }
     }
 
 
     void Update()
     {
-        //Debug.Log("Current time of day: " + currentTimeOfDay);
-        //Debug.Log("Before time of day: " + beforeTimeOfDay);
-        if (currentWeather == Weather.Rainy) mesh.enabled = true;
-        else mesh.enabled = false;
+        //雨なら
+        if (currentWeather == Weather.Rainy)
+        {
+            //濡れエフェクト実行
+            mesh.enabled = true;
+
+            //波紋を表現実行
+            RandomInput.SetWaitTime(ripples[0].waitTime);
+        }
+        else
+        {
+            //濡れエフェクトオフ
+            mesh.enabled = false;
+
+            //波紋表現を遅く
+            RandomInput.SetWaitTime(ripples[1].waitTime);
+        }
+
 
         //夕方から夜に変わるタイミングのみ
         if(beforeTimeOfDay == TimeOfDay.Evening && currentTimeOfDay == TimeOfDay.Night)
         {
             SetRandomWeather();
-            Debug.Log(futureWeather);
+            //Debug.Log(futureWeather);
         }
 
 
@@ -95,8 +128,6 @@ public class WeatherController : DayWeatherManager
             currentWeather = futureWeather;
         }
         //Debug.Log(currentWeather);
-
-        beforeTimeOfDay = currentTimeOfDay;
     }
 
     // 天気をランダムに設定

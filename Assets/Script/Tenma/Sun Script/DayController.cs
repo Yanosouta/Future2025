@@ -117,12 +117,9 @@ public class DayController : DayWeatherManager
         if (currentTimeOfDay == TimeOfDay.Night)
         {
             DirectionLight.intensity = 0.1f;
-            Debug.Log(DirectionLight.intensity);
+            //Debug.Log(DirectionLight.intensity);
         }
-        else
-        {
-            DirectionLight.intensity = defIntensity;
-        }
+        
 
         //色の減衰
         if(currentTimeOfDay == TimeOfDay.Afternoon || currentTimeOfDay == TimeOfDay.Evening)
@@ -139,13 +136,22 @@ public class DayController : DayWeatherManager
 
         //**********コマンド***********
         //30分で一周
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.LeftShift) 
+            && Input.GetKey(KeyCode.O))
         {
             SetDirectionLightRotate(0.2f);
         }
 
+        //6分で一周
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) 
+            && Input.GetKey(KeyCode.O))
+        {
+            SetDirectionLightRotate(1f);
+        }
+
         //30秒で一周
-        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
+        if(Input.GetKey(KeyCode.LeftShift) 
+            && Input.GetKey(KeyCode.P))
         {
             SetDirectionLightRotate(12f);
         }

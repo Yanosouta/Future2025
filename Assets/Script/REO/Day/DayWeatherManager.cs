@@ -56,8 +56,8 @@ public class DayWeatherManager : MonoBehaviour
     private void Start()
     {
         // ‰Šú’l‚Ìİ’è
-        currentTimeOfDay = TimeOfDay.Morning;
-        currentWeather = Weather.Sunny;
+        currentTimeOfDay = beforeTimeOfDay = TimeOfDay.Morning;
+        currentWeather = futureWeather = Weather.Sunny;
 
         UpdateEnvironment();
     }
