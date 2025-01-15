@@ -6,20 +6,23 @@ using System.Collections.Generic;
 public class KAPIBARA_AI : MonoBehaviour
 {
     // --- AIState用変数
-    public enum AIState { Idle, Walking, Eating } // AIState::AIの状態を定義
-                                                  // Idle::待機
-                                                  // Walking::歩く
-                                                  // Eating::食べる
+    public enum AIState { Idle, Walking, Eating,GoroGoro } // AIState::AIの状態を定義
+                                                           // Idle::待機
+                                                           // Walking::歩く
+                                                           // Eating::食べる
+                                                           // GoroGoro::ゴロゴロ
     private AIState currentState;                 // 現在のステート格納用
 
     // ステートの出現確率
     [Range(0, 100)] public int idleWeight = 50; // Idleの重み
     [Range(0, 100)] public int walkingWeight = 30; // Walkingの重み
+    //[Range(0, 100)] public int GoroGoroWeight = 30; // GoroGoroの重み
     //[Range(0, 100)] public int eatingWeight = 20; // Eatingの重み
 
 
     public float idleDuration = 2.0f;// Idleステートの待機時間
     public float eatingDuration = 3.0f;// Eatingステートのアニメーション再生時間
+    public float grogroDuration = 3.0f;// Eatingステートのアニメーション再生時間
 
     public float  IdleRotationSpeed = 10f;
     private float IdletargetRotation; // 次の目標回転角度
@@ -81,6 +84,9 @@ public class KAPIBARA_AI : MonoBehaviour
             case AIState.Eating:
                 Eating();
                 break;
+            //case AIState.GoroGoro:
+            //    GoroGoro();
+            //    break;
         }
     }
 
@@ -144,6 +150,11 @@ public class KAPIBARA_AI : MonoBehaviour
                     yield return new WaitForSeconds(eatingDuration);
                     currentState = AIState.Idle; // EatingからIdleへ遷移
                     break;
+
+                //case AIState.GoroGoro:
+                //    Debug.Log("状態: GoroGoro");
+                //    yield return new WaitForSeconds(grogroDuration);
+                //    break;
             }
         }
     }
@@ -242,10 +253,16 @@ public class KAPIBARA_AI : MonoBehaviour
             }
         }
     }
+    public void GoroGoro()
+    {
+        animator.SetInteger("state", 3); // Eatingアニメーションを再生
+    
+        
+    }
     private AIState GetWeightedRandomState()
     {
         // 重みの合計を計算
-        int totalWeight = idleWeight + walkingWeight;// + eatingWeight;
+        int totalWeight = idleWeight + walkingWeight; //+ GoroGoroWeight;
         int randomValue = Random.Range(0, totalWeight);
 
         // ランダムな値に基づいてステートを決定
@@ -259,7 +276,7 @@ public class KAPIBARA_AI : MonoBehaviour
         }
         //else
         //{
-        //    return AIState.Eating;
+        //    return AIState.GoroGoro;
         //}
     }
 

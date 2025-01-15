@@ -27439,6 +27439,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 0}
   rainObj: {fileID: 2112990313}
+  ripples:
+  - OnRain: 1
+    waitTime: 0.1
+  - OnRain: 0
+    waitTime: 1
   weatherWeights:
   - weather: 0
     weight: 20
@@ -49867,6 +49872,11 @@ MonoBehaviour:
   - {fileID: 7018224085350549725, guid: fc07486165a5b534cb993734b9a6efc0, type: 3}
   - {fileID: 7018224085350549725, guid: c922dfc82bad8614892560fb583176fa, type: 3}
   - {fileID: 7018224085350549725, guid: 0df7cc90fd4d14641ae9b2d30505f938, type: 3}
+  - {fileID: 7018224085350549725, guid: 9ee241257935dae479fa155522ea28e3, type: 3}
+  - {fileID: 7018224085350549725, guid: 4f37f44c1eb5cab4db070e9703104e66, type: 3}
+  - {fileID: 7018224085350549725, guid: 62a18197287e59945bcb5a3ee2d153ef, type: 3}
+  - {fileID: 7018224085350549725, guid: 8d47b5b59639bab4bab3391b1841ae94, type: 3}
+  - {fileID: 7018224085350549725, guid: 14637ebe0caefb940883a599250e827f, type: 3}
   parentObject: {fileID: 733160921}
   minScale: 30
   maxScale: 40
@@ -63632,6 +63642,16 @@ MonoBehaviour:
   - {fileID: 7018224085350549725, guid: 0df7cc90fd4d14641ae9b2d30505f938, type: 3}
   - {fileID: 7018224085350549725, guid: c922dfc82bad8614892560fb583176fa, type: 3}
   - {fileID: 7018224085350549725, guid: 4f37f44c1eb5cab4db070e9703104e66, type: 3}
+  - {fileID: 7018224085350549725, guid: 62a18197287e59945bcb5a3ee2d153ef, type: 3}
+  - {fileID: 7018224085350549725, guid: 8d47b5b59639bab4bab3391b1841ae94, type: 3}
+  - {fileID: 7018224085350549725, guid: 14637ebe0caefb940883a599250e827f, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
+  - {fileID: 7018224085350549725, guid: 4c918d5588975ac4eb95fe28a174c922, type: 3}
   spawnInterval: 60
   maxObjects: 10
   nextSpawnTime: 0
