@@ -15,6 +15,7 @@ public class KapibaraSpawner : MonoBehaviour
     public float maxScale = 2f;  // 最大スケール（インスペクターで設定可能）
 
     public CameraChange camChange;
+    KapiDicData KapiData;
 
     void Start()
     {
@@ -28,6 +29,9 @@ public class KapibaraSpawner : MonoBehaviour
 
     void Update()
     {
+        if (KapiData == null)
+            KapiData = FindObjectOfType<KapiDicData>();
+
         if (camChange == null)
         {
             camChange = FindObjectOfType<CameraChange>(); // CameraChangeスクリプトを自動で見つける
@@ -85,5 +89,14 @@ public class KapibaraSpawner : MonoBehaviour
         {
             camChange.AddCamera(spawnedCamera.gameObject);
         }
+
+        // 生成したオブジェクトのIdを参照
+        KapiID kapiID = spawnedObject.GetComponent<KapiID>();
+        if (kapiID != null)
+        {
+            Debug.Log("すぽおおおおおおおおおおおおおんID:" + kapiID.KapiId);
+        }
+
+        KapiData.MarkAsKapi(kapiID.KapiId);
     }
 }
